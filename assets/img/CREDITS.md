@@ -44,3 +44,4 @@ All photos are from Unsplash and used under the Unsplash License
 | assets/img/services/ground-transportation/private-transfers.jpg | Holiday Extras | https://images.unsplash.com/photo-1772468237159-674f05233185 |
 | assets/img/services/yacht-boat-phinisi/vvip.jpg | Oliver Hayes | https://images.unsplash.com/photo-1697124510322-27ef594f67fd |
 | assets/img/services/experiences/water-activities.jpg | Ishan @seefromthesky | https://images.unsplash.com/photo-1484896104369-90eb48a7596b |
+| assets/img/assets/img/padar-island-phone.jpg | Mitch Hodiono | https://images.unsplash.com/photo-1660279582815-8d9a2b0d7e27 |

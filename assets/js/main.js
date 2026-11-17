@@ -4,6 +4,60 @@
   var nav = document.querySelector(".nav");
   var finePointer = matchMedia("(hover: hover) and (pointer: fine)").matches;
 
+  /* Motion: sections and cards glide up into place as they reach the screen.
+     Only movement, never hidden: text is always readable. Things already on screen
+     when the page opens are left alone so nothing jumps. */
+  (function () {
+    if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var phone = matchMedia("(max-width: 960px)").matches;
+    var sel = [".sec-head", ".ed", ".svc-list a", ".why h2", ".why-grid > div", ".about > *", ".cta > div",
+               ".item", ".prose section", ".days li", ".options > div", ".svc-intro > *", ".enq-side", ".facts", ".f-grid > div"];
+    if (phone) sel.push("#story .L2 .vision", "#story .L3 .acct", "#story .L4 .dragon", "#story .L4 .st-copy");
+    var els = Array.prototype.slice.call(document.querySelectorAll(sel.join(",")));
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (en) {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { rootMargin: "0px 0px -6% 0px", threshold: 0.08 });
+    els.forEach(function (el) {
+      var r = el.getBoundingClientRect();
+      if (r.top < innerHeight && r.bottom > 0) return;            // already visible: leave it
+      var sibs = el.parentElement ? Array.prototype.indexOf.call(el.parentElement.children, el) : 0;
+      el.style.setProperty("--rv", String(Math.min(sibs, 5)));
+      el.classList.add(el.matches(".svc-list a, .days li") ? "rv-x" : "rv", "rv");
+      io.observe(el);
+    });
+    /* switch the glide on only after the starting position is set, so nothing shifts on load */
+    requestAnimationFrame(function () { requestAnimationFrame(function () {
+      els.forEach(function (el) { if (el.classList.contains("rv")) el.classList.add("rv-on"); });
+    }); });
+  })();
+
+  /* Komodo photo: tilts toward the mouse, and "reacts" when tapped or clicked */
+  var dragon = document.querySelector(".dragon");
+  if (dragon) {
+    var dimg = dragon.querySelector(".dimg");
+    var still = matchMedia("(prefers-reduced-motion: reduce)").matches;
+    function poke() {
+      if (still) return;
+      dragon.classList.remove("poke");
+      void dragon.offsetWidth;                       // restart the animation on every tap
+      dragon.classList.add("poke");
+    }
+    dragon.addEventListener("click", poke);
+    dragon.addEventListener("keydown", function (e) { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); poke(); } });
+    dragon.addEventListener("animationend", function () { dragon.classList.remove("poke"); });
+    if (finePointer && !still) {
+      dragon.addEventListener("pointermove", function (e) {
+        if (dragon.classList.contains("poke")) return;
+        var r = dragon.getBoundingClientRect();
+        var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
+        dimg.style.transform = "perspective(900px) rotateY(" + (x * 7).toFixed(2) + "deg) rotateX(" + (-y * 7).toFixed(2) + "deg)";
+      });
+      dragon.addEventListener("pointerleave", function () { dimg.style.transform = ""; });
+    }
+  }
+
   /* Nav background once the page scrolls */
   var story = document.getElementById("story");
   function navState() {
@@ -127,7 +181,23 @@
   var form = document.getElementById("enquiry-form");
   if (form) {
     var cfg = JSON.parse(form.getAttribute("data-cfg"));
-    var fields = Array.prototype.slice.call(form.querySelectorAll("input, textarea"));
+    var fields = Array.prototype.slice.call(form.querySelectorAll(".field input, .field textarea"));
+    var trap = form.elements.website;   // hidden spam trap: people never see or fill it
+
+    /* Save a copy of the enquiry to the Google Sheet (and email the team) before
+       opening WhatsApp or the email app. Fire-and-forget: it never blocks the guest. */
+    function saveEnquiry(channel) {
+      if (!cfg.endpoint) return;
+      var data = { channel: channel, lang: cfg.lang, page: location.href, website: trap ? trap.value : "" };
+      fields.forEach(function (el) { data[el.name] = el.value.trim(); });
+      try {
+        fetch(cfg.endpoint, {
+          method: "POST", mode: "no-cors", keepalive: true,
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify(data)
+        }).catch(function () {});
+      } catch (e) { /* never stop the guest from reaching us */ }
+    }
 
     function check(el) {
       var v = el.value.trim(), msg = "";
@@ -159,6 +229,7 @@
         fields.forEach(function (el) { if (!check(el)) { ok = false; first = first || el; } });
         if (!ok) { first.focus(); return; }
         var text = message();
+        saveEnquiry(b.getAttribute("data-send"));
         if (b.getAttribute("data-send") === "wa") {
           window.open("https://wa.me/" + cfg.wa + "?text=" + encodeURIComponent(text), "_blank", "noopener");
         } else {

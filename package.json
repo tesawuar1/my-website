@@ -1,0 +1,14 @@
+{
+  "name": "komodo-and-ko",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Komodo & Ko. website: a static, bilingual (English / Indonesian) concierge site for Komodo National Park.",
+  "scripts": {
+    "build": "node tools/build-dist.js",
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=14"
+  },
+  "license": "UNLICENSED"
+}

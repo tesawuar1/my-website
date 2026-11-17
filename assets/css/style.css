@@ -126,15 +126,15 @@ body.menu-open{overflow:hidden}
 .drawer .lang{margin-top:26px}
 
 /* ---------------- Home: scroll story ---------------- */
-#story{position:relative;height:560vh}
+#story{position:relative;height:380vh}
 .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden;background:linear-gradient(180deg,#3f73b5 0%,#6f9bd0 30%,#a3c0e2 60%,#cddfee 100%)}
 .cam{position:absolute;inset:-9% -3% -3%;will-change:transform}
 .cam .plate{position:absolute;left:0;right:0;bottom:0;top:12%;width:100%;height:88%;object-fit:cover;object-position:50% 0%;
   -webkit-mask-image:linear-gradient(180deg,transparent 0,#000 9%);mask-image:linear-gradient(180deg,transparent 0,#000 9%)}
 .mist{position:absolute;inset:-10%;pointer-events:none;
-  background:radial-gradient(40% 30% at 20% 80%,rgba(255,255,255,.28),transparent 70%),radial-gradient(35% 25% at 85% 30%,rgba(255,255,255,.22),transparent 70%);
-  animation:drift 20s ease-in-out infinite alternate}
-@keyframes drift{to{transform:translate3d(4%,-2%,0)}}
+  background:radial-gradient(40% 30% at 20% 80%,rgba(255,255,255,.28),transparent 70%),radial-gradient(35% 25% at 85% 30%,rgba(255,255,255,.22),transparent 70%)}
+/* layers that move while scrolling get their own GPU layer, so the browser only re-composites them */
+.hero-copy,.camF,.vision,.dragon,.st-copy{will-change:transform,opacity}
 .veil{position:absolute;inset:0;pointer-events:none;
   background:linear-gradient(180deg,rgba(14,22,14,.64) 0%,rgba(14,22,14,.46) 36%,rgba(14,22,14,.18) 58%,rgba(14,22,14,0) 72%,rgba(14,22,14,.42) 100%)}
 .shade{position:absolute;inset:0;pointer-events:none;background:radial-gradient(75% 65% at 50% 50%,rgba(14,22,14,.66),rgba(14,22,14,.34) 70%,rgba(14,22,14,.16));opacity:0}
@@ -181,13 +181,12 @@ body.menu-open{overflow:hidden}
   -webkit-mask-image:radial-gradient(ellipse 52% 48% at 46% 46%,#000 44%,rgba(0,0,0,.7) 64%,transparent 100%);
   mask-image:radial-gradient(ellipse 52% 48% at 46% 46%,#000 44%,rgba(0,0,0,.7) 64%,transparent 100%)}
 .fog i{position:absolute;inset:0}
-.fog .f0{background:radial-gradient(60% 55% at 40% 45%,#f3f2ec,#e8ebe6 60%,#dfe5e2);filter:blur(10px)}
-.fog .f1{inset:-20%;opacity:.55;filter:blur(14px);animation:fogA 26s ease-in-out infinite alternate;
+.fog .f0{background:radial-gradient(60% 55% at 40% 45%,#f5f4ef,#ecefea 55%,rgba(226,233,230,.85))}
+.fog .f1,.fog .f2{display:none}
+.fog .f1{inset:-20%;opacity:.55;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='460'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.006 0.014' numOctaves='3' seed='4'/%3E%3CfeColorMatrix values='0 0 0 0 .92 0 0 0 0 .93 0 0 0 0 .9 1.4 0 0 0 -.7'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") center/cover}
-.fog .f2{inset:-20%;opacity:.9;filter:blur(8px);animation:fogB 19s ease-in-out infinite alternate;
+.fog .f2{inset:-20%;opacity:.9;
   background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='700' height='460'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.004 0.009' numOctaves='4' seed='11'/%3E%3CfeColorMatrix values='0 0 0 0 .98 0 0 0 0 .97 0 0 0 0 .95 1.6 0 0 0 -.55'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E") center/cover}
-@keyframes fogA{to{transform:translate3d(6%,3%,0) scale(1.08)}}
-@keyframes fogB{to{transform:translate3d(-7%,-2%,0) scale(1.12)}}
 
 .vision{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:min(900px,90vw);text-align:center;color:var(--ivory)}
 .vision .label{color:var(--brass-l)}
@@ -195,8 +194,8 @@ body.menu-open{overflow:hidden}
 .vision h2 .w{display:inline-block;margin-right:.2em}
 .vision p{margin:0 auto;font-size:19px;line-height:1.65;max-width:560px;text-shadow:0 1px 14px rgba(10,20,10,.75)}
 
-.acct{position:absolute;left:40px;top:calc(var(--nav-h) + 8vh);width:min(600px,86vw);color:var(--forest);
-  font-family:var(--serif);font-weight:500;font-size:clamp(27px,2.5vw,38px);line-height:1.22;text-shadow:0 0 30px rgba(250,248,243,.9)}
+.acct{position:absolute;left:40px;top:calc(var(--nav-h) + 6vh);width:min(600px,86vw);color:var(--forest);background:var(--ivory);
+  padding:30px 34px;font-family:var(--serif);font-weight:500;font-size:clamp(25px,2.3vw,34px);line-height:1.25}
 .acct .w{display:inline-block;margin-right:.24em}
 .spots{position:absolute;inset:0;pointer-events:none}
 .spot{position:absolute;left:0;top:0;display:flex;align-items:flex-start;gap:14px;pointer-events:auto;cursor:pointer;visibility:hidden;transform-origin:13px 13px}
@@ -231,6 +230,27 @@ body.menu-open{overflow:hidden}
 .feats a:hover::after{width:56px}
 .prog{position:absolute;left:50%;bottom:24px;width:120px;height:2px;margin-left:-60px;background:rgba(244,240,227,.28);overflow:hidden}
 .prog i{position:absolute;inset:0;background:var(--ivory);transform-origin:left;transform:scaleX(0)}
+
+/* Scenes: each scene is either shown or hidden, with one quick, crisp fade. No blur, no word-by-word reveal.
+   story.js sets data-scene (0 hero, 1 promise, 2 island paragraph, 3 Komodo dragon). */
+#story .snap{position:absolute;left:0;width:1px;height:1px;top:0;pointer-events:none}
+#story .layer,#story .night,#story .shade,#story .veil,#story .veil-b,#story .camF{
+  opacity:0;visibility:hidden;transition:opacity .3s ease,visibility 0s linear .3s}
+#story .layer>*{transition:transform .45s var(--ease)}
+#story .L2 .vision{transform:translate(-50%,calc(-50% + 14px))}
+#story .L3 .acct{transform:translateY(14px)}
+#story .L4 .dragon,#story .L4 .st-copy{transform:translateY(14px)}
+#story[data-scene="0"] .L0,#story[data-scene="0"] .L1,#story[data-scene="0"] .veil,#story[data-scene="0"] .veil-b,#story[data-scene="0"] .camF,
+#story[data-scene="1"] .L2,#story[data-scene="1"] .shade,
+#story[data-scene="2"] .L3,
+#story[data-scene="3"] .L4,#story[data-scene="3"] .night{opacity:1;visibility:visible;transition:opacity .3s ease,visibility 0s}
+#story[data-scene="1"] .L2 .vision{transform:translate(-50%,-50%)}
+#story[data-scene="2"] .L3 .acct,#story[data-scene="3"] .L4 .dragon,#story[data-scene="3"] .L4 .st-copy{transform:none}
+#story[data-scene="0"] .L0 .hero-copy{transform:none}
+#story .L0 .hero-copy{transform:translateY(-24px);transition:transform .45s var(--ease)}
+#story .shade{background:radial-gradient(75% 65% at 50% 50%,rgba(14,22,14,.6),rgba(14,22,14,.38) 70%,rgba(14,22,14,.22))}
+.vision h2 .w{display:inline}
+.spot{transition:opacity .3s ease}
 
 .st-copy .btn{margin-top:34px}
 
@@ -489,7 +509,7 @@ body.menu-open{overflow:hidden}
   .st-copy>p{font-size:16.5px;margin-top:12px}
   .st-copy .label{display:none}
   .caption{left:24px;bottom:96px;font-size:13.5px}
-  .acct{left:24px;top:calc(var(--nav-h) + 4vh)}
+  .acct{left:20px;right:20px;width:auto;top:calc(var(--nav-h) + 3vh);padding:22px 24px;font-size:23px}
   .hero-copy h1 .ln{white-space:normal}
   .hud{display:none}
   .caption{left:24px;right:24px;bottom:92px;padding-left:18px}
@@ -498,6 +518,7 @@ body.menu-open{overflow:hidden}
   .hint{right:24px;bottom:40px;font-size:13.5px}
   .hint i{width:30px;height:30px}
   .panel{margin-top:-8vh}
+  #story{height:320vh}
   .crumbs{left:24px}
 }
 @media (max-width:600px){
@@ -523,4 +544,222 @@ body.menu-open{overflow:hidden}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
+}
+
+/* ---------------- Phones: the story becomes four normal full-screen sections ----------------
+   No pinning, no scroll-linked animation and no snapping: the page moves with your finger.
+   story.js does nothing at this width. */
+@media (max-width:960px){
+  #story{height:auto}
+  #story .stage{position:relative;height:auto;overflow:visible;background:none;padding-top:100vh;padding-top:100lvh}
+  #story .cam{inset:0 0 auto 0;height:100vh;height:100lvh;transform:none!important;will-change:auto;
+    background:linear-gradient(180deg,#3f73b5 0%,#6f9bd0 30%,#a3c0e2 60%,#cddfee 100%)}
+  #story .camF,#story .fog,#story .shade,#story .night,#story .prog,#story .snap,#story .spots,#story .hint{display:none}
+  #story .veil{inset:0 0 auto 0;height:100vh;height:100lvh;bottom:auto}
+  #story .layer,#story .veil,#story .veil-b{opacity:1!important;visibility:visible!important;transition:none}
+  #story .layer>*{transition:none}
+  #story .L0,#story .L1{position:absolute;inset:0 0 auto 0;height:100vh;height:100lvh}
+  #story .L0 .hero-copy{transform:none!important}
+  #story .L1 .veil-b{position:absolute}
+  #story .L2,#story .L3,#story .L4{position:relative;inset:auto;min-height:100vh;min-height:100lvh;display:flex;align-items:center;pointer-events:auto}
+  /* scene 2: the promise, over the island */
+  #story .L2{justify-content:center;padding:90px 22px;isolation:isolate;
+    background:linear-gradient(rgba(14,22,14,.5),rgba(14,22,14,.5)),url(../img/padar-island-phone.jpg) 56% 62%/cover no-repeat,var(--forest)}
+  #story .L2 .vision,#story[data-scene] .L2 .vision{position:relative;left:auto;top:auto;transform:none;width:100%}
+  #story .vision h2{font-size:42px}
+  /* scene 3: the paragraph on its ivory panel, over another view of the island */
+  #story .L3{align-items:flex-start;padding:calc(var(--nav-h) + 24px) 20px 40px;
+    background:url(../img/destinations/padar-island.jpg) 62% 70%/cover no-repeat,var(--forest)}
+  #story .L3 .acct,#story[data-scene] .L3 .acct{position:relative;left:auto;right:auto;top:auto;transform:none}
+  /* scene 4: Komodo dragon */
+  #story .L4{background:var(--deep);align-items:center}
+  #story .station{position:relative;inset:auto;padding:96px 24px 64px;align-content:center;width:100%}
+  #story .dcard{left:auto;right:-30vw;bottom:-22px;width:46vw;max-width:220px;padding:14px 16px}
+  #story .dcard h4{font-size:21px}
+  #story .L4 .dragon,#story .L4 .st-copy,#story[data-scene] .L4 .dragon,#story[data-scene] .L4 .st-copy{transform:none}
+  #story .dragon{height:auto;width:min(62vw,300px);aspect-ratio:5/6}
+  .panel{margin-top:0}
+}
+
+/* Phones: one swipe = one section. The phone's own scroll snapping moves exactly one
+   section per swipe (snap-stop: always stops a strong flick from skipping a section).
+   The rest of the page is one tall snap area, so it scrolls freely; the footer has its
+   own end point so the bottom of the page is always reachable. */
+@media (max-width:960px){
+  html.snap-home{scroll-snap-type:y mandatory;scroll-behavior:auto}
+  html.snap-home #story .cam,html.snap-home #story .L2,html.snap-home #story .L3,html.snap-home #story .L4{
+    scroll-snap-align:start;scroll-snap-stop:always}
+  html.snap-home .panel{scroll-snap-align:start}
+  html.snap-home .footer{scroll-snap-align:end}
+}
+@media (max-width:960px) and (prefers-reduced-motion:reduce){
+  html.snap-home{scroll-snap-type:y proximity}
+}
+
+/* ---------------- Hover animations (mouse and trackpad only) ----------------
+   Cards lift with a soft shadow while the photo zooms and the title slides;
+   menu items, links and headings lift or slide with a brass accent. */
+@media (hover:hover) and (pointer:fine){
+  /* photo cards and pictures */
+  .ed .pic,.item-pic,.svc-media,.dragon img,.crest{transition:transform .6s var(--ease),box-shadow .6s var(--ease)}
+  .ed .pic .bg,.item-pic .bg{transition:transform 1.4s var(--ease),filter .6s var(--ease)}
+  .ed .txt h3,.ed .meta,.ed p{transition:transform .5s var(--ease),color .35s ease}
+  .ed:hover .pic{transform:translateY(-8px);box-shadow:0 26px 50px -18px rgba(20,32,19,.45)}
+  .ed:hover .pic .bg{transform:scale(1.08);filter:saturate(1.08) brightness(1.04)}
+  .ed:hover .txt h3{transform:translateX(8px);color:var(--moss)}
+  .ed:hover .meta{transform:translateX(8px)}
+  .ed:hover p{transform:translateX(4px)}
+  .ed .link{transition:background-size .45s var(--ease),letter-spacing .45s var(--ease)}
+  .ed:hover .link{letter-spacing:.1em}
+  .item.has-pic:hover .item-pic{transform:translateY(-6px);box-shadow:0 22px 44px -18px rgba(20,32,19,.45)}
+  .item.has-pic:hover .item-pic .bg{transform:scale(1.07)}
+  .svc-list a:hover h3{color:var(--moss)}
+  .svc-media:hover{transform:scale(1.015)}
+  .dragon:hover img{transform:scale(1.03)}
+  .crest:hover{transform:translateY(-6px) rotate(-.6deg);box-shadow:0 30px 60px -24px rgba(20,32,19,.55)}
+  .why-grid div,.options div,.item:not(.has-pic){transition:transform .5s var(--ease)}
+  .why-grid div:hover,.options div:hover,.item:not(.has-pic):hover{transform:translateY(-6px)}
+
+  /* navigation */
+  .menu-btn{transition:transform .35s var(--ease),color .3s ease}
+  .menu-btn:hover,.menu>li.open .menu-btn{transform:translateY(-2px)}
+  .nav.solid .menu-btn:hover,.nav.open-dd .menu-btn:hover{color:var(--brass)}
+  .brand{transition:transform .45s var(--ease)}
+  .brand:hover{transform:scale(1.04)}
+  .lang a{transition:opacity .2s,transform .3s var(--ease)}
+  .lang a:hover{transform:translateY(-2px)}
+  .dd a.sub,.dd h4 a{transition:transform .35s var(--ease),color .25s ease}
+  .dd h4 a{display:inline-block}
+  .dd a.sub:hover,.dd h4 a:hover{transform:translateX(6px);color:var(--brass)}
+  .footer a{display:inline-block;transition:transform .3s var(--ease),opacity .2s}
+  .footer a:hover{transform:translateX(4px)}
+  .btn{transition:background .35s var(--ease),color .35s var(--ease),border-color .35s var(--ease),transform .35s var(--ease),box-shadow .35s var(--ease)}
+  .btn:hover{transform:translateY(-2px);box-shadow:0 12px 26px -12px rgba(20,32,19,.5)}
+
+  /* headings and sub-headings */
+  main h1,main h2,main h3,.toc a,.crumbs a{transition:transform .45s var(--ease),color .3s ease}
+  main h2,main h3{transform-origin:left center}
+  .sec-head h2:hover,.prose h2:hover,.pkg h2:hover,.svc-intro h2:hover,.legal-doc .prose h3:hover,.item h3:hover,
+  .why-grid h3:hover,.options h3:hover,.about h2:hover,.how h2:hover,.how-step h3:hover{transform:translateY(-3px) scale(1.015)}
+  .page-hero h1:hover,.cta h2:hover,.st-copy h2:hover{transform:scale(1.02)}
+  .toc a:hover{transform:translateX(4px)}
+  .crumbs a:hover{transform:translateY(-1px)}
+  #story .vision h2,#story .vision h2:hover,.hero-copy h1:hover{transform:none}
+}
+
+/* How it works: five numbered steps */
+.how{background:var(--white)}
+.how-steps{list-style:none;display:grid;grid-template-columns:repeat(5,1fr);gap:0;border-top:1px solid var(--line)}
+.how-step{position:relative;padding:34px 26px 10px 0}
+.how-step+.how-step{padding-left:26px;border-left:1px solid var(--line)}
+.how-num{display:block;font-family:var(--serif);font-style:italic;font-size:56px;line-height:1;color:var(--brass);margin-bottom:18px;
+  transition:transform .5s var(--ease),color .3s ease}
+.how-step h3{font-size:26px;margin-bottom:10px}
+.how-step p{color:var(--ink2);font-size:16.5px;line-height:1.65}
+.how-step{transition:transform .5s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .how-step:hover{transform:translateY(-8px)}
+  .how-step:hover .how-num{transform:scale(1.12) translateX(4px);color:var(--forest)}
+}
+@media (max-width:1180px){
+  .how-steps{grid-template-columns:repeat(3,1fr)}
+  .how-step:nth-child(4){padding-left:0;border-left:0}
+}
+@media (max-width:600px){
+  .how-steps{grid-template-columns:1fr;border-top:0}
+  .how-step,.how-step+.how-step{display:grid;grid-template-columns:56px 1fr;column-gap:14px;padding:22px 0;border-left:0;border-top:1px solid var(--line)}
+  .how-num{grid-row:span 2;font-size:44px;margin:0}
+  .how-step h3{font-size:24px;margin-bottom:6px}
+}
+
+/* enquiry form spam trap: hidden from people, visible to bots */
+.hp{position:absolute!important;left:-10000px;top:auto;width:1px;height:1px;overflow:hidden}
+
+/* Enquiry page: "What happens next" with the five How it works steps */
+.enq-side ol li strong{display:block;font-family:var(--serif);font-size:22px;font-weight:500;line-height:1.2;color:var(--ivory);margin-bottom:4px}
+.enq-side ol li span{display:block;font-size:15.5px;line-height:1.6;color:rgba(244,240,227,.8)}
+.enq-side ol{gap:22px}
+.enq-side ol li::before{grid-row:span 2}
+.enq-side ol li strong,.enq-side ol li span{grid-column:2}
+
+/* ---------------- Motion: home page (and other pages) ----------------
+   Text never waits to appear: elements are always fully visible and only glide
+   into place. Phones get a slow living zoom on the photos, a rising headline and
+   a bouncing scroll hint; sections slide up as they arrive on screen. */
+
+/* Phone hero: photo slowly breathes, scroll hint returns */
+@media (max-width:960px){
+  #story .cam .plate{animation:kenburns 18s ease-in-out infinite alternate;transform-origin:55% 70%}
+  @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.1) translate3d(-1.5%,-1%,0)}}
+  #story .hint{display:flex;position:absolute;right:20px;bottom:22px;font-size:13px}
+  #story .hint i{width:28px;height:28px}
+  #story .caption{bottom:76px}
+  /* Komodo photo gently zooms */
+  #story .dragon img{animation:kenburns 14s ease-in-out infinite alternate}
+}
+
+/* Slide-into-place for sections and cards (added by main.js; transform only, never hidden) */
+.rv{transform:translate3d(0,34px,0)}
+.rv.rv-on{transition:transform .9s var(--ease) calc(var(--rv,0) * 90ms)}
+.rv.in{transform:none}
+.rv-x{transform:translate3d(-30px,0,0)}
+.rv-x.in{transform:none}
+
+/* Touch screens: a short press response instead of hover */
+@media (hover:none){
+  .ed:active .pic{transform:scale(.97)}
+  .ed .pic{transition:transform .25s ease}
+  .ed:active .pic .bg{transform:scale(1.06)}
+  .btn:active,.svc-list a:active,.feats a:active{transform:scale(.97)}
+  .btn,.svc-list a{transition:transform .2s ease}
+}
+
+@media (prefers-reduced-motion:reduce){
+  #story .cam .plate,#story .dragon img{animation:none}
+  .rv,.rv-x{transform:none;transition:none}
+}
+@media (max-width:960px){
+  #story .L2 .vision.rv.rv-on,#story .L3 .acct.rv.rv-on,#story .L4 .dragon.rv.rv-on,#story .L4 .st-copy.rv.rv-on{
+    transition:transform .8s var(--ease) calc(var(--rv,0) * 90ms)}
+  #story .L2 .vision.rv:not(.in),#story .L3 .acct.rv:not(.in),#story .L4 .dragon.rv:not(.in),#story .L4 .st-copy.rv:not(.in){
+    transform:translate3d(0,34px,0)}
+}
+
+/* Island paragraph: no box. Ivory text over a soft dark shading, so it reads on the photo. */
+.acct,#story .L3 .acct{background:none;padding:0;color:var(--ivory);
+  text-shadow:0 2px 20px rgba(10,16,10,.55),0 1px 3px rgba(10,16,10,.45)}
+#story .L3::before{content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(100deg,rgba(14,22,14,.66) 0%,rgba(14,22,14,.38) 38%,rgba(14,22,14,0) 64%)}
+#story .L3 .acct{z-index:1}
+@media (max-width:960px){
+  #story .L3::before{background:linear-gradient(180deg,rgba(14,22,14,.7) 0%,rgba(14,22,14,.35) 45%,rgba(14,22,14,0) 70%)}
+  #story .L3 .acct{padding:0;font-size:26px;line-height:1.3}
+}
+
+/* Komodo: card moves to the lower left so the dragon's face (right side) stays clear */
+.dcard{right:auto;left:-48px;bottom:-28px}
+@media (max-width:960px){
+  #story .dcard{left:-12px;right:auto;bottom:-26px;width:46vw;max-width:210px}
+}
+/* Komodo photo reacts: tilt + zoom on hover (mouse), a quick "poke" on tap or click */
+.dragon{cursor:pointer;-webkit-tap-highlight-color:transparent;transform-style:preserve-3d}
+.dragon .dimg{position:relative;width:100%;height:100%;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.dragon .dimg img{transition:transform .9s var(--ease)}
+.dcard{transition:transform .5s var(--ease)}
+@media (hover:hover) and (pointer:fine){
+  .dragon:hover .dimg img{transform:scale(1.07)}
+  .dragon:hover .dcard{transform:translateY(-8px)}
+}
+.dragon.poke .dimg{animation:poke .85s var(--ease)}
+.dragon.poke .dcard{animation:cardhop .85s var(--ease)}
+@keyframes poke{
+  0%{transform:scale(1)} 18%{transform:scale(1.06) rotate(-1.4deg)} 36%{transform:scale(1.06) rotate(1.2deg)}
+  54%{transform:scale(1.05) rotate(-.6deg)} 100%{transform:scale(1) rotate(0)}}
+@keyframes cardhop{0%{transform:none} 30%{transform:translateY(-14px)} 60%{transform:translateY(2px)} 100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.dragon.poke .dimg,.dragon.poke .dcard{animation:none}}
+@media (max-width:960px){
+  #story .dragon{width:100%;max-width:440px;height:auto;aspect-ratio:4/3}
+  #story .dcard{width:150px;max-width:40%;left:-10px;bottom:-24px;padding:12px 14px}
+  #story .dcard h4{font-size:19px}
+  #story .dcard .big{font-size:36px}
 }

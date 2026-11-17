@@ -11,6 +11,9 @@ CONTACT = {
     "email_partner": "partnership@komodoandko.com",
     "whatsapp_display": "0823-3929-7918",
     "whatsapp_intl": "6282339297918",  # used for wa.me links
+    # Google Apps Script "Web app" URL that saves enquiries to the Google Sheet and emails
+    # the team. Leave empty until it is set up (see tools/google-apps-script/SETUP.md).
+    "enquiry_endpoint": "https://script.google.com/macros/s/AKfycbwAu16ED6XwP_X-eK7sjr0NGnXa_NaIHLO1YoNd0I9fbTSJi1jLTbuAZWJqrkD0bza85A/exec",
     "social": [
         ("Instagram", "https://www.instagram.com/komodoandko"),
         ("TikTok", "https://www.tiktok.com/@komodoandko"),
@@ -517,7 +520,6 @@ HOME = {
         (0.51, 0.58, L("Summit trail", "Jalur menuju puncak"), L("30 to 45 min hike", "Pendakian 30 sampai 45 menit")),
         (0.42, 0.76, L("Black-sand bay", "Teluk pasir hitam"), L("Seen from the top", "Terlihat dari puncak")),
         (0.71, 0.64, L("White-sand bay", "Teluk pasir putih"), L("Where the boats anchor", "Tempat kapal berlabuh")),
-        (0.26, 0.55, L("Turquoise bay", "Teluk biru toska"), L("Best at sunrise", "Terindah saat fajar")),
     ],
     "station_title": L("Komodo is wild. Your trip doesn't have to be.", "Komodo itu liar. Perjalanan Anda tidak harus begitu."),
     "station_p": L(
@@ -538,6 +540,29 @@ HOME = {
     ),
     "packages_title": L("Explore packages", "Jelajahi paket"),
     "destinations_title": L("Explore destinations", "Jelajahi destinasi"),
+    "how_title": L("How it works", "Cara kerjanya"),
+    "how_steps": [
+        (L("Tell us your plans", "Ceritakan rencana Anda"), L(
+            "Contact us via WhatsApp, DM, email or this enquiry form. Share your travel dates, number of guests and the experiences you're looking for.",
+            "Hubungi kami melalui WhatsApp, DM, email, atau formulir enquiry ini. Ceritakan tanggal perjalanan, jumlah tamu, dan pengalaman yang Anda cari.",
+        )),
+        (L("Explore your options", "Jelajahi pilihan Anda"), L(
+            "We'll recommend suitable services, experiences and itineraries based on your preferences and budget.",
+            "Kami akan merekomendasikan layanan, pengalaman, dan itinerary yang sesuai dengan preferensi dan anggaran Anda.",
+        )),
+        (L("Receive your proposal", "Terima penawaran Anda"), L(
+            "Review your personalised arrangements, pricing and itinerary before confirming.",
+            "Tinjau rencana perjalanan, harga, dan itinerary yang disusun khusus untuk Anda sebelum mengonfirmasi.",
+        )),
+        (L("Confirm your booking", "Konfirmasi pemesanan"), L(
+            "Once you're happy with the arrangements, proceed with payment to secure your booking.",
+            "Setelah Anda setuju dengan rencananya, lanjutkan pembayaran untuk mengamankan pemesanan Anda.",
+        )),
+        (L("Enjoy the experience", "Nikmati perjalanan Anda"), L(
+            "We'll coordinate your arrangements and keep you informed, so you can enjoy your journey with peace of mind.",
+            "Kami akan mengoordinasikan semua rencana dan terus memberi kabar, sehingga Anda bisa menikmati perjalanan dengan tenang.",
+        )),
+    ],
     "why_title": L("Why choose us", "Mengapa memilih kami"),
     "why": [
         (L("Local experts", "Ahli lokal"), L(
