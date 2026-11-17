@@ -9,10 +9,8 @@
      when the page opens are left alone so nothing jumps. */
   (function () {
     if (!("IntersectionObserver" in window) || matchMedia("(prefers-reduced-motion: reduce)").matches) return;
-    var phone = matchMedia("(max-width: 960px)").matches;
     var sel = [".sec-head", ".ed", ".svc-list a", ".why h2", ".why-grid > div", ".about > *", ".cta > div",
                ".item", ".prose section", ".days li", ".options > div", ".svc-intro > *", ".enq-side", ".facts", ".f-grid > div"];
-    if (phone) sel.push("#story .L2 .vision", "#story .L3 .acct", "#story .L4 .dragon", "#story .L4 .st-copy");
     var els = Array.prototype.slice.call(document.querySelectorAll(sel.join(",")));
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (en) {
@@ -52,7 +50,7 @@
         if (dragon.classList.contains("poke")) return;
         var r = dragon.getBoundingClientRect();
         var x = (e.clientX - r.left) / r.width - 0.5, y = (e.clientY - r.top) / r.height - 0.5;
-        dimg.style.transform = "perspective(900px) rotateY(" + (x * 7).toFixed(2) + "deg) rotateX(" + (-y * 7).toFixed(2) + "deg)";
+        dimg.style.transform = "perspective(900px) rotateY(" + (x * 12).toFixed(2) + "deg) rotateX(" + (-y * 12).toFixed(2) + "deg) scale(1.03)";
       });
       dragon.addEventListener("pointerleave", function () { dimg.style.transform = ""; });
     }

@@ -334,7 +334,7 @@ LON  119.5714&deg; E
   <div class="layer L4"><div class="station">
     <div class="dragon" tabindex="0" role="button" aria-label="Komodo dragon"><div class="dimg"><img src="{pg.asset("img/komodo-dragon.jpg")}?v={ver("img/komodo-dragon.jpg")}" alt="A Komodo dragon resting with its tongue out"></div>
       <div class="dcard"><h4>{esc(t(H["dragon_card_title"]))}</h4><div class="latin">{H["dragon_card_latin"]}</div>
-        <div class="big"><span data-num>3</span><small>m</small></div><p>{esc(t(H["dragon_note"]))}</p></div></div>
+        <p>{esc(t(H["dragon_note"]))}</p></div></div>
     <div class="st-copy"><h2>{esc(t(H["station_title"]))}</h2><p>{esc(t(H["station_p"]))}</p>
       <a class="btn btn-line light" href="#services">{esc(t(H["services_title"]))}</a></div>
   </div></div>

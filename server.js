@@ -15,12 +15,12 @@ var TYPES = {
   ".html": "text/html; charset=utf-8", ".css": "text/css; charset=utf-8", ".js": "text/javascript; charset=utf-8",
   ".json": "application/json; charset=utf-8", ".md": "text/plain; charset=utf-8", ".txt": "text/plain; charset=utf-8",
   ".jpg": "image/jpeg", ".jpeg": "image/jpeg", ".png": "image/png", ".webp": "image/webp", ".svg": "image/svg+xml",
-  ".ico": "image/x-icon", ".woff2": "font/woff2", ".mp4": "video/mp4"
+  ".ico": "image/x-icon", ".woff2": "font/woff2", ".mp4": "video/mp4", ".glb": "model/gltf-binary"
 };
 
 function send(res, code, file) {
   var ext = path.extname(file).toLowerCase();
-  var long = /\.(jpe?g|png|webp|svg|woff2|mp4)$/.test(ext);
+  var long = /\.(jpe?g|png|webp|svg|woff2|mp4|glb)$/.test(ext);
   res.writeHead(code, {
     "Content-Type": TYPES[ext] || "application/octet-stream",
     "Cache-Control": long ? "public, max-age=604800" : "public, max-age=300",

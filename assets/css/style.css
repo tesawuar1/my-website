@@ -143,7 +143,8 @@ body.menu-open{overflow:hidden}
 
 .hero-copy{position:absolute;left:0;right:0;top:calc(var(--nav-h) + 7vh);text-align:center;padding:0 24px;color:var(--ivory)}
 .hero-copy .label{color:var(--brass-l);margin-bottom:22px;font-size:15px;letter-spacing:.1em}
-.hero-copy h1{color:var(--ivory);margin:0 auto;font-size:clamp(50px,6.4vw,100px)}
+.hero-copy h1{color:var(--ivory);margin:0 auto;font-size:clamp(50px,6.4vw,100px);
+  text-shadow:0 2px 28px rgba(8,14,8,.55),0 1px 4px rgba(8,14,8,.6)}
 .hero-copy h1 .ln{display:block;overflow:hidden;padding-bottom:.08em;white-space:nowrap}
 .hero-copy h1 .ln span{display:inline-block;transform:translateY(105%);animation:rise 1.4s var(--ease) forwards}
 @keyframes rise{to{transform:none}}
@@ -210,15 +211,14 @@ body.menu-open{overflow:hidden}
 .night{position:absolute;inset:0;background:var(--deep);opacity:0;visibility:hidden}
 .station{position:absolute;inset:0;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);align-items:center;gap:7vw;
   padding:calc(var(--nav-h) + 3vh) 7vw 7vh;color:var(--ivory)}
-.dragon{position:relative;justify-self:end;height:min(66vh,640px);aspect-ratio:5/6}
-.dragon::before{content:"";position:absolute;inset:-16px 16px 16px -16px;border:1px solid rgba(205,182,138,.45);pointer-events:none}
+/* the photo and the info card sit side by side (a flex row), never overlapping:
+   the photo takes whatever width is left over after the card's own fixed width */
+.dragon{position:relative;justify-self:end;width:100%;display:flex;align-items:flex-end;gap:24px}
 .dragon img{position:relative;width:100%;height:100%;object-fit:cover;object-position:92% 50%}
-.dcard{position:absolute;right:-48px;bottom:-28px;width:250px;padding:24px 24px 22px;background:var(--ivory);color:var(--forest)}
-.dcard h4{font-family:var(--serif);font-size:26px;font-weight:500;line-height:1.1}
-.dcard .latin{font-family:var(--serif);font-style:italic;font-size:17px;color:var(--brass)}
-.dcard .big{font-family:var(--serif);font-size:60px;font-weight:500;line-height:1;margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}
-.dcard .big small{font-family:var(--sans);font-size:15px;font-weight:500;margin-left:6px}
-.dcard p{font-size:14.5px;line-height:1.55;color:var(--ink2);margin-top:8px}
+.dcard{position:relative;flex:0 0 210px;width:210px;padding:24px 22px;background:var(--ivory);color:var(--forest)}
+.dcard h4{font-family:var(--serif);font-size:23px;font-weight:500;line-height:1.15}
+.dcard .latin{font-family:var(--serif);font-style:italic;font-size:15px;color:var(--brass)}
+.dcard p{font-size:13.5px;line-height:1.55;color:var(--ink2);margin-top:10px}
 .st-copy .label{color:var(--brass-l)}
 .st-copy h2{color:var(--ivory);font-size:clamp(36px,3.6vw,56px);max-width:540px}
 .st-copy>p{margin-top:18px;font-size:18px;color:rgba(244,240,227,.82);max-width:460px}
@@ -277,6 +277,10 @@ body.menu-open{overflow:hidden}
 .svc-list a:hover .go,.svc-list a.on .go{width:72px}
 .svc-list .thumb{display:none}
 
+/* Card photos always read as lifted, not just on hover (hover adds a bigger one on top) */
+.ed .pic,.item-pic,.svc-media,.svc-list .thumb,.crest,.dragon .dimg{
+  box-shadow:0 22px 44px -22px rgba(20,32,19,.45)}
+
 /* Editorial cards: picture first, words beneath */
 .grid{display:grid;gap:56px 28px}
 .grid.g2{grid-template-columns:repeat(2,1fr)}
@@ -290,6 +294,7 @@ body.menu-open{overflow:hidden}
 .grid.pk .ed:nth-child(-n+2) .pic{aspect-ratio:3/2}
 .ed .pic .bg{position:absolute;inset:0;background-repeat:no-repeat;transition:transform 1.6s var(--ease)}
 .ed:hover .pic .bg{transform:scale(1.05)}
+.ed.rv:not(.in) .pic .bg{transform:scale(1.14)}
 .ed .txt{padding-top:22px}
 .ed .meta{display:block;font-size:14.5px;font-weight:500;letter-spacing:.06em;color:var(--brass);margin-bottom:6px}
 .ed h3{font-size:clamp(26px,2.2vw,34px)}
@@ -423,7 +428,8 @@ body.menu-open{overflow:hidden}
 .grid.offers{padding:40px 0 140px}
 .item.has-pic{border-top:0;padding-top:0}
 .item-pic{position:relative;aspect-ratio:4/3;overflow:hidden;background:var(--forest);margin-bottom:26px}
-.item-pic .bg{position:absolute;inset:0}
+.item-pic .bg{position:absolute;inset:0;transition:transform 1.3s var(--ease)}
+.item.rv:not(.in) .item-pic .bg{transform:scale(1.14)}
 
 /* legal documents */
 .legal-doc .prose section{padding-bottom:56px;margin-bottom:56px}
@@ -499,11 +505,12 @@ body.menu-open{overflow:hidden}
   .items,.items.three{grid-template-columns:1fr}
   .f-grid{grid-template-columns:1fr 1fr}
   .station{grid-template-columns:1fr;align-content:start;gap:30px;padding:calc(var(--nav-h) + 26px) 24px 40px}
-  .dragon{justify-self:start;height:28vh}
-  .dragon::before{inset:-10px 10px 10px -10px}
-  .dcard{right:auto;left:calc(100% + 18px);bottom:0;width:min(190px,calc(100vw - 100% - 66px));padding:16px}
-  .dcard .big{font-size:42px;margin-top:8px;padding-top:8px}
-  .dcard p,.dcard .latin{display:none}
+  .dragon{gap:14px}
+  .dragon .dimg::before{inset:-10px}
+  .dcard{flex:0 0 108px;width:108px;padding:12px 14px}
+  .dcard h4{font-size:15px;line-height:1.2}
+  .dcard .latin{font-size:11.5px}
+  .dcard p{display:none}
   .feats{margin-top:18px}
   .feats a{padding:12px 0;font-size:22px}
   .st-copy>p{font-size:16.5px;margin-top:12px}
@@ -544,56 +551,6 @@ body.menu-open{overflow:hidden}
 }
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important;scroll-behavior:auto!important}
-}
-
-/* ---------------- Phones: the story becomes four normal full-screen sections ----------------
-   No pinning, no scroll-linked animation and no snapping: the page moves with your finger.
-   story.js does nothing at this width. */
-@media (max-width:960px){
-  #story{height:auto}
-  #story .stage{position:relative;height:auto;overflow:visible;background:none;padding-top:100vh;padding-top:100lvh}
-  #story .cam{inset:0 0 auto 0;height:100vh;height:100lvh;transform:none!important;will-change:auto;
-    background:linear-gradient(180deg,#3f73b5 0%,#6f9bd0 30%,#a3c0e2 60%,#cddfee 100%)}
-  #story .camF,#story .fog,#story .shade,#story .night,#story .prog,#story .snap,#story .spots,#story .hint{display:none}
-  #story .veil{inset:0 0 auto 0;height:100vh;height:100lvh;bottom:auto}
-  #story .layer,#story .veil,#story .veil-b{opacity:1!important;visibility:visible!important;transition:none}
-  #story .layer>*{transition:none}
-  #story .L0,#story .L1{position:absolute;inset:0 0 auto 0;height:100vh;height:100lvh}
-  #story .L0 .hero-copy{transform:none!important}
-  #story .L1 .veil-b{position:absolute}
-  #story .L2,#story .L3,#story .L4{position:relative;inset:auto;min-height:100vh;min-height:100lvh;display:flex;align-items:center;pointer-events:auto}
-  /* scene 2: the promise, over the island */
-  #story .L2{justify-content:center;padding:90px 22px;isolation:isolate;
-    background:linear-gradient(rgba(14,22,14,.5),rgba(14,22,14,.5)),url(../img/padar-island-phone.jpg) 56% 62%/cover no-repeat,var(--forest)}
-  #story .L2 .vision,#story[data-scene] .L2 .vision{position:relative;left:auto;top:auto;transform:none;width:100%}
-  #story .vision h2{font-size:42px}
-  /* scene 3: the paragraph on its ivory panel, over another view of the island */
-  #story .L3{align-items:flex-start;padding:calc(var(--nav-h) + 24px) 20px 40px;
-    background:url(../img/destinations/padar-island.jpg) 62% 70%/cover no-repeat,var(--forest)}
-  #story .L3 .acct,#story[data-scene] .L3 .acct{position:relative;left:auto;right:auto;top:auto;transform:none}
-  /* scene 4: Komodo dragon */
-  #story .L4{background:var(--deep);align-items:center}
-  #story .station{position:relative;inset:auto;padding:96px 24px 64px;align-content:center;width:100%}
-  #story .dcard{left:auto;right:-30vw;bottom:-22px;width:46vw;max-width:220px;padding:14px 16px}
-  #story .dcard h4{font-size:21px}
-  #story .L4 .dragon,#story .L4 .st-copy,#story[data-scene] .L4 .dragon,#story[data-scene] .L4 .st-copy{transform:none}
-  #story .dragon{height:auto;width:min(62vw,300px);aspect-ratio:5/6}
-  .panel{margin-top:0}
-}
-
-/* Phones: one swipe = one section. The phone's own scroll snapping moves exactly one
-   section per swipe (snap-stop: always stops a strong flick from skipping a section).
-   The rest of the page is one tall snap area, so it scrolls freely; the footer has its
-   own end point so the bottom of the page is always reachable. */
-@media (max-width:960px){
-  html.snap-home{scroll-snap-type:y mandatory;scroll-behavior:auto}
-  html.snap-home #story .cam,html.snap-home #story .L2,html.snap-home #story .L3,html.snap-home #story .L4{
-    scroll-snap-align:start;scroll-snap-stop:always}
-  html.snap-home .panel{scroll-snap-align:start}
-  html.snap-home .footer{scroll-snap-align:end}
-}
-@media (max-width:960px) and (prefers-reduced-motion:reduce){
-  html.snap-home{scroll-snap-type:y proximity}
 }
 
 /* ---------------- Hover animations (mouse and trackpad only) ----------------
@@ -687,15 +644,16 @@ body.menu-open{overflow:hidden}
    into place. Phones get a slow living zoom on the photos, a rising headline and
    a bouncing scroll hint; sections slide up as they arrive on screen. */
 
-/* Phone hero: photo slowly breathes, scroll hint returns */
+/* Phone hero: scroll hint sits lower; the camera zoom itself comes from story.js,
+   same as desktop (no separate CSS breathing animation on the photo here) */
 @media (max-width:960px){
-  #story .cam .plate{animation:kenburns 18s ease-in-out infinite alternate;transform-origin:55% 70%}
   @keyframes kenburns{from{transform:scale(1)}to{transform:scale(1.1) translate3d(-1.5%,-1%,0)}}
   #story .hint{display:flex;position:absolute;right:20px;bottom:22px;font-size:13px}
   #story .hint i{width:28px;height:28px}
   #story .caption{bottom:76px}
-  /* Komodo photo gently zooms */
-  #story .dragon img{animation:kenburns 14s ease-in-out infinite alternate}
+  /* Komodo photo gently zooms, centred on the dragon's head (92% 50% crop) so the
+     motion feels aimed at the subject instead of the middle of the frame */
+  #story .dragon img{animation:kenburns 14s ease-in-out infinite alternate;transform-origin:80% 45%;will-change:transform}
 }
 
 /* Slide-into-place for sections and cards (added by main.js; transform only, never hidden) */
@@ -718,13 +676,6 @@ body.menu-open{overflow:hidden}
   #story .cam .plate,#story .dragon img{animation:none}
   .rv,.rv-x{transform:none;transition:none}
 }
-@media (max-width:960px){
-  #story .L2 .vision.rv.rv-on,#story .L3 .acct.rv.rv-on,#story .L4 .dragon.rv.rv-on,#story .L4 .st-copy.rv.rv-on{
-    transition:transform .8s var(--ease) calc(var(--rv,0) * 90ms)}
-  #story .L2 .vision.rv:not(.in),#story .L3 .acct.rv:not(.in),#story .L4 .dragon.rv:not(.in),#story .L4 .st-copy.rv:not(.in){
-    transform:translate3d(0,34px,0)}
-}
-
 /* Island paragraph: no box. Ivory text over a soft dark shading, so it reads on the photo. */
 .acct,#story .L3 .acct{background:none;padding:0;color:var(--ivory);
   text-shadow:0 2px 20px rgba(10,16,10,.55),0 1px 3px rgba(10,16,10,.45)}
@@ -736,14 +687,11 @@ body.menu-open{overflow:hidden}
   #story .L3 .acct{padding:0;font-size:26px;line-height:1.3}
 }
 
-/* Komodo: card moves to the lower left so the dragon's face (right side) stays clear */
-.dcard{right:auto;left:-48px;bottom:-28px}
-@media (max-width:960px){
-  #story .dcard{left:-12px;right:auto;bottom:-26px;width:46vw;max-width:210px}
-}
 /* Komodo photo reacts: tilt + zoom on hover (mouse), a quick "poke" on tap or click */
-.dragon{cursor:pointer;-webkit-tap-highlight-color:transparent;transform-style:preserve-3d}
-.dragon .dimg{position:relative;width:100%;height:100%;overflow:hidden;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.dragon{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.dragon .dimg{position:relative;flex:1 1 auto;min-width:0;max-width:440px;aspect-ratio:5/6;overflow:hidden;
+  transform-style:preserve-3d;transition:transform .5s var(--ease),box-shadow .5s var(--ease)}
+.dragon .dimg::before{content:"";position:absolute;inset:-16px;border:1px solid rgba(205,182,138,.45);pointer-events:none}
 .dragon .dimg img{transition:transform .9s var(--ease)}
 .dcard{transition:transform .5s var(--ease)}
 @media (hover:hover) and (pointer:fine){
@@ -757,9 +705,3 @@ body.menu-open{overflow:hidden}
   54%{transform:scale(1.05) rotate(-.6deg)} 100%{transform:scale(1) rotate(0)}}
 @keyframes cardhop{0%{transform:none} 30%{transform:translateY(-14px)} 60%{transform:translateY(2px)} 100%{transform:none}}
 @media (prefers-reduced-motion:reduce){.dragon.poke .dimg,.dragon.poke .dcard{animation:none}}
-@media (max-width:960px){
-  #story .dragon{width:100%;max-width:440px;height:auto;aspect-ratio:4/3}
-  #story .dcard{width:150px;max-width:40%;left:-10px;bottom:-24px;padding:12px 14px}
-  #story .dcard h4{font-size:19px}
-  #story .dcard .big{font-size:36px}
-}
