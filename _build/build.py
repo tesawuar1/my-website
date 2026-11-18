@@ -336,7 +336,7 @@ LON  119.5714&deg; E
       <div class="dcard"><h4>{esc(t(H["dragon_card_title"]))}</h4><div class="latin">{H["dragon_card_latin"]}</div>
         <p>{esc(t(H["dragon_note"]))}</p></div></div>
     <div class="st-copy"><h2>{esc(t(H["station_title"]))}</h2><p>{esc(t(H["station_p"]))}</p>
-      <a class="btn btn-line light" href="#services">{esc(t(H["services_title"]))}</a></div>
+      <a class="btn btn-line light" href="{pg.link("services/index.html")}">{esc(t(H["services_title"]))}</a></div>
   </div></div>
 
   <div class="prog" aria-hidden="true"><i></i></div>
