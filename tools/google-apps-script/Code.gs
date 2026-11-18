@@ -5,7 +5,20 @@
  * "Send via WhatsApp" and "Send via Email" buttons), adds it as a row in a
  * Google Sheet, and emails a notification to the addresses below.
  *
- * Set-up (once, signed in as YOUR-MAIN-ADDRESS@gmail.com):
+ * Who can change what (read this before you fill in the addresses):
+ *   - OWNER_EMAIL is the account you run setup() as. It — and only it — owns the
+ *     Google Sheet this creates, so it is the only account that can edit or delete
+ *     a row once it has been written. Use your own personal address here, never
+ *     one you plan to hand to staff.
+ *   - STAFF_EMAIL (optional) only ever gets emailed a copy of each enquiry the
+ *     moment it arrives. It is deliberately NOT given access to the sheet, so
+ *     whoever reads that inbox — a customer-service hire, say — can see and reply
+ *     to enquiries, but cannot go back and alter or erase what you originally
+ *     received. Don't separately share the sheet with them as an Editor either;
+ *     that would undo this protection. "Viewer" access is fine if they need to
+ *     browse it.
+ *
+ * Set-up (once, signed in as OWNER_EMAIL):
  *   1. Run setup() once and allow the permissions it asks for.
  *   2. Deploy > New deployment > Web app: Execute as "Me", access "Anyone".
  *   3. Copy the Web app URL into _build/content_main.py ("enquiry_endpoint")
@@ -13,13 +26,14 @@
  * Full steps: tools/google-apps-script/SETUP.md
  */
 
-var OWNER_EMAIL = "YOUR-MAIN-ADDRESS@gmail.com";     // owns the sheet, gets notifications
-var BACKUP_EMAIL = "YOUR-BACKUP-ADDRESS@gmail.com";    // shared as editor, gets notifications
+var OWNER_EMAIL = "YOUR-MAIN-ADDRESS@gmail.com";     // owns the sheet; the only editable copy
+var STAFF_EMAIL = "YOUR-STAFF-ADDRESS@gmail.com";    // notification only — never given sheet access
 var SHEET_NAME = "Enquiries";
 var HEADERS = ["Received", "Sent via", "Name", "Phone / WhatsApp", "Email", "Travel dates",
                "Guests", "Service / experience", "Estimated budget", "Language", "Page", "Status"];
 
-/** Run once: creates the spreadsheet, adds headers and shares it with the backup address. */
+/** Run once: creates the spreadsheet and adds headers. Only OWNER_EMAIL ever gets
+ *  edit access automatically — STAFF_EMAIL is intentionally not shared the sheet. */
 function setup() {
   var props = PropertiesService.getScriptProperties();
   var id = props.getProperty("SHEET_ID");
@@ -31,7 +45,6 @@ function setup() {
     sh.setFrozenRows(1);
     sh.setColumnWidths(1, HEADERS.length, 170);
   }
-  if (BACKUP_EMAIL) ss.addEditor(BACKUP_EMAIL);
   props.setProperty("SHEET_ID", ss.getId());
   Logger.log("Sheet ready: " + ss.getUrl());
   return ss.getUrl();
@@ -87,7 +100,7 @@ function notify(d, sheetUrl) {
   ];
   var options = { name: "Komodo & Ko. Website" };
   if (/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(clean(d.email))) options.replyTo = clean(d.email);
-  var to = [OWNER_EMAIL, BACKUP_EMAIL].filter(String).join(",");
+  var to = [OWNER_EMAIL, STAFF_EMAIL].filter(String).join(",");
   MailApp.sendEmail(to, subject, lines.join("\n"), options);
 }
 
