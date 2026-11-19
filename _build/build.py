@@ -193,7 +193,10 @@ def layout(pg, title, desc, body, home_page=False, scripts=()):
 <meta name="theme-color" content="#283926">
 <link rel="alternate" hreflang="en" href="{pg.up_site + pg.path}">
 <link rel="alternate" hreflang="id" href="{pg.up_site + 'id/' + pg.path}">
-<link rel="icon" href="{pg.asset("img/logo.jpg")}">
+<link rel="icon" href="{pg.asset("icons/favicon-32.png")}?v={ver("icons/favicon-32.png")}" sizes="32x32" type="image/png">
+<link rel="icon" href="{pg.asset("icons/favicon-16.png")}?v={ver("icons/favicon-16.png")}" sizes="16x16" type="image/png">
+<link rel="icon" href="{pg.asset("icons/favicon-192.png")}?v={ver("icons/favicon-192.png")}" sizes="192x192" type="image/png">
+<link rel="apple-touch-icon" href="{pg.asset("icons/apple-touch-icon.png")}?v={ver("icons/apple-touch-icon.png")}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
@@ -569,6 +572,16 @@ def enquiry_page(pg):
         "labels": {k: t(v[0]) for k, v in F.items()},
         "err": {k: t(v) for k, v in E["errors"].items()},
     }
+    date_field = (
+        f'<div class="field full"><label for="f-date-start">{esc(t(F["dates"][0]))}<span class="req" aria-hidden="true">*</span></label>'
+        f'<div class="date-range">'
+        f'<input id="f-date-start" type="date" aria-label="{esc(t(E["date_from"]))}">'
+        f'<span class="date-sep" aria-hidden="true">&#8594;</span>'
+        f'<input id="f-date-end" type="date" aria-label="{esc(t(E["date_to"]))}">'
+        f'</div>'
+        f'<input type="hidden" id="f-dates" name="dates" required aria-describedby="e-dates">'
+        f'<span class="err" id="e-dates" role="alert"></span></div>'
+    )
     # "What happens next" shows the five "How it works" steps
     steps = "".join(f"<li><strong>{esc(t(a))}</strong><span>{esc(t(b))}</span></li>" for a, b in HOME["how_steps"])
     body = page_hero(pg, title, t(E["intro"]), [(title, None)], pic_style(pg, "pages", "enquiry", ("padar-island", "50% 80%", "cover"))) + f"""
@@ -583,7 +596,7 @@ def enquiry_page(pg):
     {fld("phone", "tel", extra='autocomplete="tel" inputmode="tel"')}
     {fld("email", "email", extra='autocomplete="email"')}
     {fld("guests", "number", extra='min="1" inputmode="numeric"')}
-    {fld("dates", full=True)}
+    {date_field}
     {fld("service", full=True, area=True)}
     {fld("budget", full=True)}
     <div class="hp" aria-hidden="true"><label for="f-website">Leave this field empty</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>

@@ -179,8 +179,34 @@
   var form = document.getElementById("enquiry-form");
   if (form) {
     var cfg = JSON.parse(form.getAttribute("data-cfg"));
-    var fields = Array.prototype.slice.call(form.querySelectorAll(".field input, .field textarea"));
+    /* direct children only: the two visible date pickers sit a level deeper, inside
+       .date-range, and are combined into the hidden #f-dates below instead of being
+       submitted as fields of their own */
+    var fields = Array.prototype.slice.call(form.querySelectorAll(".field > input, .field > textarea"));
     var trap = form.elements.website;   // hidden spam trap: people never see or fill it
+
+    /* Travel dates: two native date pickers (so month/year/day all pick from a real
+       calendar) combined into one readable value in the hidden field that actually
+       gets validated and sent. */
+    (function () {
+      var start = document.getElementById("f-date-start"), end = document.getElementById("f-date-end");
+      var hidden = document.getElementById("f-dates");
+      if (!start || !end || !hidden) return;
+      var today = new Date().toISOString().slice(0, 10);
+      start.min = today;
+      function fmt(iso) {
+        var d = new Date(iso + "T00:00:00");
+        return d.toLocaleDateString(cfg.lang === "id" ? "id-ID" : "en-US", { day: "numeric", month: "short", year: "numeric" });
+      }
+      function sync() {
+        end.min = start.value || today;
+        if (start.value && end.value && end.value < start.value) end.value = start.value;
+        hidden.value = start.value && end.value ? fmt(start.value) + " – " + fmt(end.value) : "";
+        if (hidden.closest(".field").classList.contains("bad")) check(hidden);
+      }
+      start.addEventListener("change", sync);
+      end.addEventListener("change", sync);
+    })();
 
     /* Save a copy of the enquiry to the Google Sheet (and email the team) before
        opening WhatsApp or the email app. Fire-and-forget: it never blocks the guest. */

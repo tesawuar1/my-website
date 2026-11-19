@@ -487,10 +487,10 @@ PACKAGES = [
 # Home page
 # ---------------------------------------------------------------------------
 HOME = {
-    "title": L("Komodo & Ko. | Komodo Concierge Service", "Komodo & Ko. | Layanan Concierge Komodo"),
+    "title": L("Komodo & Ko.", "Komodo & Ko."),
     "desc": L(
-        "From planning and booking to coordinating every detail, we bring your Komodo journey together so you can travel with ease.",
-        "Dari perencanaan dan pemesanan hingga koordinasi setiap detail, kami menyatukan perjalanan Komodo Anda agar Anda bisa bepergian dengan tenang.",
+        "Komodo & Ko. - luxury travel concierge in Labuan Bajo. Plan, design itinerary & booking include private yacht charter, stays, transport and experience across Komodo Island.",
+        "Komodo & Ko. - konsierge perjalanan mewah di Labuan Bajo. Rencanakan, rancang itinerary & pemesanan termasuk sewa kapal phinisi pribadi, akomodasi, transportasi, dan pengalaman di seluruh Pulau Komodo.",
     ),
     "h1a": L("You Explore.", "Anda Menjelajah."),
     "h1b": L("We Handle the Rest", "Sisanya Kami yang Urus"),
@@ -594,6 +594,8 @@ ENQUIRY = {
         "Tell us about your trip and we will reply with ideas and a personal quote. All fields are required.",
         "Ceritakan rencana perjalanan Anda dan kami akan membalas dengan ide serta penawaran pribadi. Semua kolom wajib diisi.",
     ),
+    "date_from": L("Start date", "Tanggal mulai"),
+    "date_to": L("End date", "Tanggal selesai"),
     "next_title": L("What happens next", "Langkah selanjutnya"),
     "next": [
         L("Choose to send your enquiry by WhatsApp or email.", "Pilih untuk mengirim permintaan Anda melalui WhatsApp atau email."),
@@ -614,6 +616,7 @@ ENQUIRY = {
         "email": L("Please enter a valid email address, e.g. johnsmith@gmail.com.", "Mohon masukkan alamat email yang valid, contoh: johnsmith@gmail.com."),
         "phone": L("Please enter a phone number with at least 8 digits.", "Mohon masukkan nomor telepon minimal 8 digit."),
         "guests": L("Please enter a number of at least 1.", "Mohon masukkan angka minimal 1."),
+        "range": L("Please choose a start and end date.", "Mohon pilih tanggal mulai dan selesai."),
     },
     "send_wa": L("Send via WhatsApp", "Kirim via WhatsApp"),
     "send_email": L("Send via Email", "Kirim via Email"),
