@@ -28,6 +28,19 @@ def esc(s):
     return html.escape(s, quote=True)
 
 
+def clean_url(p):
+    """Strip the .html a page is built as off the URL we link to — the live site
+    (see .htaccess) serves foo.html for a request to /foo, and foo/index.html for
+    a request to /foo/, so every internal link can just read clean."""
+    if p == "index.html":
+        return ""
+    if p.endswith("/index.html"):
+        return p[: -len("index.html")]  # keeps the trailing slash
+    if p.endswith(".html"):
+        return p[: -len(".html")]
+    return p
+
+
 class Page:
     """Knows the current language and where the page sits, so it can build relative links."""
 
@@ -41,13 +54,13 @@ class Page:
         return v[self.lang] if isinstance(v, dict) else v
 
     def link(self, p):
-        return self.up_lang + p
+        return self.up_lang + clean_url(p) or "."
 
     def asset(self, p):
         return self.up_site + "assets/" + p
 
     def other_lang(self):
-        return self.up_site + ("id/" if self.lang == "en" else "") + self.path
+        return self.up_site + ("id/" if self.lang == "en" else "") + clean_url(self.path) or "."
 
 
 def pic_style(pg, kind, slug, pic):
@@ -82,11 +95,20 @@ def lang_switch(pg):
     return f'<div class="lang" aria-label="{esc(t(UI["lang_label"]))}">{en}<i></i>{id_}</div>'
 
 
+def service_own_page(s):
+    """services/<slug>.html normally, but services/<slug>/index.html when at least
+    one item has its own sub-page — otherwise that file would collide with the
+    services/<slug>/ folder those sub-pages live in, once URLs drop the .html."""
+    if any(f"{s['slug']}/{it[0]}" in OFFERS for it in s["items"]):
+        return f"services/{s['slug']}/index.html"
+    return f"services/{s['slug']}.html"
+
+
 def sub_href(pg, s, a):
     """Link to an offer's own page when it has one, otherwise to its anchor on the service page."""
     if f"{s['slug']}/{a}" in OFFERS:
         return pg.link(f"services/{s['slug']}/{a}.html")
-    return pg.link(f"services/{s['slug']}.html") + "#" + a
+    return pg.link(service_own_page(s)) + "#" + a
 
 
 def nav(pg):
@@ -95,7 +117,7 @@ def nav(pg):
     for s in SERVICES:
         subs = "" if s.get("steps") else "".join(
             f'<a class="sub" href="{sub_href(pg, s, a)}">{esc(t(n))}</a>' for a, n, _ in s["items"])
-        svc_cols.append(f'<div><h4><a href="{pg.link("services/" + s["slug"] + ".html")}">{esc(t(s["name"]))}</a></h4>{subs}</div>')
+        svc_cols.append(f'<div><h4><a href="{pg.link(service_own_page(s))}">{esc(t(s["name"]))}</a></h4>{subs}</div>')
     pkg_links = "".join(f'<a class="sub" href="{pg.link("packages/" + p["slug"] + ".html")}">{esc(t(p["name"]))}</a>' for p in PACKAGES)
     dest_links = "".join(f'<a class="sub" href="{pg.link("destinations/" + d["slug"] + ".html")}">{esc(t(d["name"]))}</a>' for d in DESTINATIONS)
 
@@ -125,7 +147,7 @@ def nav(pg):
 </div></header>"""
 
     m_svc = "".join(
-        f'<h5><a href="{pg.link("services/" + s["slug"] + ".html")}">{esc(t(s["name"]))}</a></h5>'
+        f'<h5><a href="{pg.link(service_own_page(s))}">{esc(t(s["name"]))}</a></h5>'
         + ("" if s.get("steps") else "".join(f'<a class="sub" href="{sub_href(pg, s, a)}">{esc(t(n))}</a>' for a, n, _ in s["items"]))
         for s in SERVICES)
     drawer = f"""
@@ -191,8 +213,9 @@ def layout(pg, title, desc, body, home_page=False, scripts=()):
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <meta name="theme-color" content="#283926">
-<link rel="alternate" hreflang="en" href="{pg.up_site + pg.path}">
-<link rel="alternate" hreflang="id" href="{pg.up_site + 'id/' + pg.path}">
+<link rel="alternate" hreflang="en" href="{pg.up_site + clean_url(pg.path) or "."}">
+<link rel="alternate" hreflang="id" href="{pg.up_site + 'id/' + clean_url(pg.path) or "."}">
+<link rel="canonical" href="{pg.link(pg.path)}">
 <link rel="icon" href="{pg.asset("icons/favicon-32.png")}?v={ver("icons/favicon-32.png")}" sizes="32x32" type="image/png">
 <link rel="icon" href="{pg.asset("icons/favicon-16.png")}?v={ver("icons/favicon-16.png")}" sizes="16x16" type="image/png">
 <link rel="icon" href="{pg.asset("icons/favicon-192.png")}?v={ver("icons/favicon-192.png")}" sizes="192x192" type="image/png">
@@ -251,7 +274,7 @@ def cta_band(pg):
 def services_grid(pg):
     t = pg.t
     return '<div class="grid g3">' + "".join(
-        ed_card(pg.link(f"services/{s['slug']}.html"), t(s["name"]), pic_style(pg, "services", s["slug"], s["pic"]),
+        ed_card(pg.link(service_own_page(s)), t(s["name"]), pic_style(pg, "services", s["slug"], s["pic"]),
                 t(s["short"]), link_label=t(UI["discover"]))
         for s in SERVICES) + "</div>"
 
@@ -261,7 +284,7 @@ def services_index_block(pg):
     media = "".join(f'<div class="bg{" on" if i == 0 else ""}" style="{pic_style(pg, "services", s["slug"], s["pic"])}"></div>'
                     for i, s in enumerate(SERVICES))
     rows = "".join(
-        f'<a href="{pg.link("services/" + s["slug"] + ".html")}" data-i="{i}" class="{"on" if i == 0 else ""}">'
+        f'<a href="{pg.link(service_own_page(s))}" data-i="{i}" class="{"on" if i == 0 else ""}">'
         f'<div class="thumb" style="{pic_style(pg, "services", s["slug"], s["pic"])}"></div>'
         f'<h3>{esc(t(s["name"]))}</h3><span class="go" aria-hidden="true"></span><p>{esc(t(s["short"]))}</p></a>'
         for i, s in enumerate(SERVICES))
@@ -295,7 +318,7 @@ def home(pg):
         f'<div class="spot" data-x="{x}" data-y="{y}" role="button" tabindex="0"><span class="dot"></span>'
         f'<span class="lbl">{esc(t(lab))}<em>{esc(t(val))}</em></span></div>'
         for x, y, lab, val in H["hotspots"])
-    feats = "".join(f'<a href="{pg.link("services/" + s["slug"] + ".html")}">{esc(t(s["name"]))}</a>' for s in SERVICES)
+    feats = "".join(f'<a href="{pg.link(service_own_page(s))}">{esc(t(s["name"]))}</a>' for s in SERVICES)
     why = "".join(f"<div><h3>{esc(t(a))}</h3><p>{esc(t(b))}</p></div>" for a, b in H["why"])
     rail = "".join(dest_card(pg, d) for d in DESTINATIONS)
 
@@ -446,7 +469,7 @@ def offer_page(pg, s, item):
     o = OFFERS[f"{s['slug']}/{a}"]
     name, sname = t(n), t(s["name"])
     hero = page_hero(pg, name, t(o["lead"]),
-                     [(t(UI["nav_services"]), pg.link("services/index.html")), (sname, pg.link(f"services/{s['slug']}.html")), (name, None)],
+                     [(t(UI["nav_services"]), pg.link("services/index.html")), (sname, pg.link(service_own_page(s))), (name, None)],
                      offer_pic(pg, s, a))
     paras = "".join(f'<p class="{"lead" if i == 0 else ""}">{esc(t(x))}</p>' for i, x in enumerate(o["paras"]))
     points = "".join(f"<li>{esc(t(x))}</li>" for x in o["points"])
@@ -461,7 +484,7 @@ def offer_page(pg, s, item):
             + (f'<section class="sec paper"><div class="wrap"><div class="sec-head"><h2>{esc(t(SEE_TITLE))}</h2></div>'
                f'<div class="grid {"g4" if len(o["see"]) == 4 else "g3"}">{see}</div></div></section>' if see else "")
             + (f'<section class="sec"><div class="wrap"><div class="sec-head"><h2>{esc(sname)}</h2>'
-               f'<a class="link" href="{pg.link("services/" + s["slug"] + ".html")}">{esc(t(UI["view_all"]))}</a></div>'
+               f'<a class="link" href="{pg.link(service_own_page(s))}">{esc(t(UI["view_all"]))}</a></div>'
                f'<div class="grid g4">{more}</div></div></section>' if more else "")
             + cta_band(pg))
     return layout(pg, f"{name} | {sname} | Komodo & Ko.", t(o["lead"]), body)
@@ -783,7 +806,7 @@ def build():
             "terms.html": lambda pg: legal_page(pg, TERMS, "terms.txt"),
         }
         for s in SERVICES:
-            pages[f"services/{s['slug']}.html"] = (lambda s: lambda pg: service_page(pg, s))(s)
+            pages[service_own_page(s)] = (lambda s: lambda pg: service_page(pg, s))(s)
             for it in s["items"]:
                 if f"{s['slug']}/{it[0]}" in OFFERS:
                     pages[f"services/{s['slug']}/{it[0]}.html"] = (lambda s, it: lambda pg: offer_page(pg, s, it))(s, it)
@@ -796,6 +819,21 @@ def build():
             out.parent.mkdir(parents=True, exist_ok=True)
             out.write_text(fn(Page(lang, path)), encoding="utf-8")
             count += 1
+        # services/, packages/ and destinations/ are entirely generated — remove any
+        # page a previous build left behind under a slug that was since renamed or
+        # removed, so it can't linger (and can't collide with a same-named folder,
+        # e.g. services/foo.html next to services/foo/, once URLs drop the .html)
+        written = {base / p for p in pages}
+        for sub in ("services", "packages", "destinations"):
+            folder = base / sub
+            if not folder.exists():
+                continue
+            for stray in folder.rglob("*.html"):
+                if stray not in written:
+                    stray.unlink()
+            for d in sorted(folder.rglob("*"), key=lambda p: -len(p.parts)):
+                if d.is_dir() and not any(d.iterdir()):
+                    d.rmdir()
     write_credits()
     print(f"Built {count} pages.")
 

@@ -40,6 +40,15 @@ http.createServer(function (req, res) {
   try { url = decodeURIComponent(req.url.split("?")[0].split("#")[0]); } catch (e) { res.writeHead(400); return res.end(); }
   if (req.method !== "GET" && req.method !== "HEAD") { res.writeHead(405); return res.end(); }
   if (PRIVATE.test(url) || /(^|\/)\./.test(url)) return notFound(res);
+
+  // old-style ...html links redirect to the clean URL (mirrors the .htaccess rules used live)
+  if (/\.html$/i.test(url)) {
+    var clean = url.replace(/index\.html$/i, "").replace(/\.html$/i, "") || "/";
+    var qs = req.url.indexOf("?");
+    res.writeHead(301, { Location: clean + (qs >= 0 ? req.url.slice(qs) : "") });
+    return res.end();
+  }
+
   var file = path.normalize(path.join(BASE, url));
   if (file.indexOf(BASE) !== 0) return notFound(res);          // no escaping the site folder
   fs.stat(file, function (err, st) {
@@ -49,7 +58,8 @@ http.createServer(function (req, res) {
       return fs.stat(file, function (e2, s2) { return !e2 && s2.isFile() ? send(res, 200, file) : notFound(res); });
     }
     if (!err && st.isFile()) return send(res, 200, file);
-    notFound(res);
+    // a clean URL for a page: serve the matching .html file behind the scenes
+    fs.stat(file + ".html", function (e3, s3) { return !e3 && s3.isFile() ? send(res, 200, file + ".html") : notFound(res); });
   });
 }).listen(PORT, function () {
   console.log("Komodo & Ko. website running on port " + PORT + " (serving " + BASE + ")");

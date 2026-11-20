@@ -1,0 +1,26 @@
+# Komodo & Ko. — clean URLs (no .html extension).
+# The site is built as plain .html files (see _build/build.py); every link the
+# site generates already points at the clean address (e.g. /about, /services/).
+# This file makes the server actually answer those addresses:
+#   1. if someone reaches an old-style ...html URL (a bookmark, an old search
+#      result), send them on to the clean one with a permanent redirect;
+#   2. for a clean URL, quietly serve the matching .html file behind the scenes,
+#      without changing what's in the address bar.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # /foo/index.html or /index.html -> /foo/ or /
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\s/+(.*)index\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # /foo.html -> /foo (anything else ending in .html)
+  RewriteCond %{THE_REQUEST} ^[A-Z]+\s/+(.+)\.html[\s?] [NC]
+  RewriteRule ^ /%1 [R=301,L]
+
+  # a clean URL that isn't a real file or folder: serve the .html file for it
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME}\.html -f
+  RewriteRule ^(.*)$ $1.html [L]
+</IfModule>
