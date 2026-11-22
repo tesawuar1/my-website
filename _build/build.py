@@ -291,9 +291,9 @@ def services_index_block(pg):
     return f'<div class="svc"><div class="svc-media" aria-hidden="true">{media}</div><div class="svc-list">{rows}</div></div>'
 
 
-def package_grid(pg, only_home=False, cls="pk", exclude=None):
+def package_grid(pg, cls="pk", exclude=None):
     t = pg.t
-    items = [p for p in PACKAGES if (p.get("home") or not only_home) and p["slug"] != exclude]
+    items = [p for p in PACKAGES if p["slug"] != exclude]
     return f'<div class="grid {cls}">' + "".join(
         ed_card(pg.link(f"packages/{p['slug']}.html"), t(p["name"]), pic_style(pg, "packages", p["slug"], p["pic"]),
                 meta=t(p["duration"]), link_label=t(UI["view_package"]))
@@ -321,6 +321,10 @@ def home(pg):
     feats = "".join(f'<a href="{pg.link(service_own_page(s))}">{esc(t(s["name"]))}</a>' for s in SERVICES)
     why = "".join(f"<div><h3>{esc(t(a))}</h3><p>{esc(t(b))}</p></div>" for a, b in H["why"])
     rail = "".join(dest_card(pg, d) for d in DESTINATIONS)
+    pkg_rail = "".join(
+        ed_card(pg.link(f"packages/{p['slug']}.html"), t(p["name"]), pic_style(pg, "packages", p["slug"], p["pic"]),
+                meta=t(p["duration"]), link_label=t(UI["view_package"]))
+        for p in PACKAGES if p.get("home"))
 
     body = f"""
 <section id="story" data-scene="0" aria-label="Komodo &amp; Ko.">
@@ -375,10 +379,11 @@ LON  119.5714&deg; E
   {services_index_block(pg)}
  </div></section>
 
- <section class="sec tight" id="packages"><div class="wrap">
-  <div class="sec-head"><h2>{esc(t(H["packages_title"]))}</h2><a class="link" href="{pg.link("packages/index.html")}">{esc(t(UI["all_packages"]))}</a></div>
-  {package_grid(pg, only_home=True)}
- </div></section>
+ <section class="sec tight" id="packages">
+  <div class="wrap"><div class="sec-head"><h2>{esc(t(H["packages_title"]))}</h2>
+   <div class="rail-ctl"><button type="button" data-rail="-1" aria-label="{esc(t(UI["prev"]))}">{CHEV_L}</button><button type="button" data-rail="1" aria-label="{esc(t(UI["next"]))}">{CHEV_R}</button></div></div></div>
+  <div class="rail" tabindex="0" aria-label="{esc(t(H["packages_title"]))}">{pkg_rail}</div>
+ </section>
 
  <section class="sec paper" id="destinations">
   <div class="wrap"><div class="sec-head"><h2>{esc(t(H["destinations_title"]))}</h2>
