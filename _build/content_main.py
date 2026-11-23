@@ -487,10 +487,10 @@ PACKAGES = [
 # Home page
 # ---------------------------------------------------------------------------
 HOME = {
-    "title": L("Komodo & Ko.", "Komodo & Ko."),
+    "title": L("Komodo and Ko", "Komodo and Ko"),
     "desc": L(
-        "Komodo & Ko. - luxury travel concierge in Labuan Bajo. Plan, design itinerary & booking include private yacht charter, stays, transport and experience across Komodo Island.",
-        "Komodo & Ko. - konsierge perjalanan mewah di Labuan Bajo. Rencanakan, rancang itinerary & pemesanan termasuk sewa kapal phinisi pribadi, akomodasi, transportasi, dan pengalaman di seluruh Pulau Komodo.",
+        "Komodo and Ko - luxury travel concierge in Labuan Bajo. Plan, design itinerary & booking include private yacht charter, stays, transport and experience across Komodo Island.",
+        "Komodo and Ko - konsierge perjalanan mewah di Labuan Bajo. Rencanakan, rancang itinerary & pemesanan termasuk sewa kapal phinisi pribadi, akomodasi, transportasi, dan pengalaman di seluruh Pulau Komodo.",
     ),
     "h1a": L("You Explore.", "Anda Menjelajah."),
     "h1b": L("We Handle the Rest", "Sisanya Kami yang Urus"),
@@ -578,7 +578,7 @@ HOME = {
             "Cukup satu percakapan, bukan puluhan pemesanan. Kami mengurus detailnya selagi Anda menikmati perjalanan.",
         )),
     ],
-    "about_title": L("About Komodo & Ko.", "Tentang Komodo & Ko."),
+    "about_title": L("About Komodo and Ko", "Tentang Komodo and Ko"),
     "about_p": L(
         "We are a concierge team for Komodo National Park and Labuan Bajo, bringing boats, stays, transport and experiences together into one easy journey.",
         "Kami adalah tim concierge untuk Taman Nasional Komodo dan Labuan Bajo, yang menyatukan kapal, akomodasi, transportasi, dan pengalaman menjadi satu perjalanan yang mudah.",
@@ -628,15 +628,15 @@ ENQUIRY = {
         "Your enquiry is ready in your WhatsApp or email app. Press send there, and we will reply as soon as we can.",
         "Pesan Anda sudah siap di aplikasi WhatsApp atau email. Tekan kirim di sana, dan kami akan segera membalas.",
     ),
-    "msg_intro": L("Hello Komodo & Ko., I would like to plan a trip.", "Halo Komodo & Ko., saya ingin merencanakan perjalanan."),
+    "msg_intro": L("Hello Komodo and Ko, I would like to plan a trip.", "Halo Komodo and Ko, saya ingin merencanakan perjalanan."),
     "msg_subject": L("Enquiry from", "Enquiry dari"),
 }
 
 ABOUT = {
     "title": L("About Us", "Tentang Kami"),
     "lead": L(
-        "Komodo & Ko. is a concierge service for travellers visiting Komodo National Park and Labuan Bajo.",
-        "Komodo & Ko. adalah layanan concierge bagi wisatawan yang berkunjung ke Taman Nasional Komodo dan Labuan Bajo.",
+        "Komodo and Ko is a concierge service for travellers visiting Komodo National Park and Labuan Bajo.",
+        "Komodo and Ko adalah layanan concierge bagi wisatawan yang berkunjung ke Taman Nasional Komodo dan Labuan Bajo.",
     ),
     "body": [
         L("Planning a trip to Komodo usually means talking to many different people: boat operators, hotels, drivers, dive centres and guides. "
@@ -647,8 +647,8 @@ ABOUT = {
           "Whether you are planning a honeymoon, a family holiday or a corporate event, we design the trip around you and stay with you until you are home.",
           "Kami mengenal pulau-pulaunya, musimnya, dan orang-orang yang bekerja di sini, serta memilih mitra kami dengan cermat. "
           "Baik Anda merencanakan honeymoon, liburan keluarga, maupun acara perusahaan, kami merancang perjalanan sesuai kebutuhan Anda dan mendampingi Anda hingga kembali ke rumah."),
-        L("Komodo & Ko. operates under PT Mountclaire Group Indonesia.",
-          "Komodo & Ko. beroperasi di bawah naungan PT Mountclaire Group Indonesia."),
+        L("Komodo and Ko operates under PT Mountclaire Group Indonesia.",
+          "Komodo and Ko beroperasi di bawah naungan PT Mountclaire Group Indonesia."),
     ],
 }
 

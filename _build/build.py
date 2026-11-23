@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""Generate the Komodo & Ko. website (English at the root, Indonesian in /id/).
+"""Generate the Komodo and Ko website (English at the root, Indonesian in /id/).
 
 Usage:  python _build/build.py
 Edit text in content_main.py / content_dest.py, then run this again.
@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parent.parent
 LANGS = ("en", "id")
 FONTS = ("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500"
          "&family=Jost:wght@400;500&display=swap")
-WORDMARK = '<span class="brand-word">KOMODO &amp; KO.</span>'
+WORDMARK = '<span class="brand-word">KOMODO AND KO</span>'
 
 
 def esc(s):
@@ -131,7 +131,7 @@ def nav(pg):
 
     svc_panel = (f'<div class="dd dd-mega"><div class="dd-in">{"".join(svc_cols)}'
                  f'<div class="dd-foot"><a class="link" href="{pg.link("services/index.html")}">{esc(t(UI["all_services"]))}</a></div></div></div>')
-    brand = (f'<a class="brand" href="{pg.link("index.html")}" aria-label="Komodo &amp; Ko. {esc(t(UI["home"]))}">'
+    brand = (f'<a class="brand" href="{pg.link("index.html")}" aria-label="Komodo and Ko {esc(t(UI["home"]))}">'
              f'<span class="mark" aria-hidden="true"></span>{WORDMARK}</a>')
 
     desktop = f"""
@@ -184,7 +184,7 @@ def footer(pg):
       <li><a href="{pg.link("destinations/index.html")}">{esc(t(UI["nav_destinations"]))}</a></li>
       <li><a href="{pg.link("about.html")}">{esc(t(UI["about"]))}</a></li></ul></div>
   </div>
-  <div class="f-bottom"><span>&copy; 2026 Komodo &amp; Ko. {esc(t(UI["rights"]))}</span>
+  <div class="f-bottom"><span>&copy; 2026 Komodo and Ko {esc(t(UI["rights"]))}</span>
     <nav aria-label="Legal"><a href="{pg.link("privacy.html")}">{esc(t(UI["privacy"]))}</a><a href="{pg.link("terms.html")}">{esc(t(UI["terms"]))}</a></nav></div>
 </div></footer>"""
 
@@ -327,7 +327,7 @@ def home(pg):
         for p in PACKAGES if p.get("home"))
 
     body = f"""
-<section id="story" data-scene="0" aria-label="Komodo &amp; Ko.">
+<section id="story" data-scene="0" aria-label="Komodo and Ko">
  <i class="snap" data-stop="0"></i><i class="snap" data-stop="0.26"></i><i class="snap" data-stop="0.52"></i><i class="snap" data-stop="0.86"></i>
  <div class="stage">
   <div class="cam"><picture><source media="(max-width: 960px)" srcset="{pg.asset("img/padar-island-phone.jpg")}?v={ver("img/padar-island-phone.jpg")}"><img class="plate" src="{pg.asset("img/padar-island.jpg")}?v={ver("img/padar-island.jpg")}" fetchpriority="high" alt="View over the bays of Padar Island in Komodo National Park, with boats at anchor"></picture><div class="mist"></div></div>
@@ -394,7 +394,7 @@ LON  119.5714&deg; E
  <section class="why"><div class="wrap"><h2>{esc(t(H["why_title"]))}</h2><div class="why-grid">{why}</div></div></section>
 
  <section class="sec"><div class="wrap"><div class="about">
-  <div class="crest" role="img" aria-label="Komodo &amp; Ko."><span class="mark"></span>{WORDMARK}</div>
+  <div class="crest" role="img" aria-label="Komodo and Ko"><span class="mark"></span>{WORDMARK}</div>
   <div><h2>{esc(t(H["about_title"]))}</h2><p>{esc(t(H["about_p"]))}</p>
    <a class="btn btn-line" href="{pg.link("about.html")}">{esc(t(UI["learn_more"]))}</a></div>
  </div></div></section>
@@ -412,7 +412,7 @@ def services_index(pg):
     title = t(UI["nav_services"])
     body = page_hero(pg, title, t(HOME["services_p"]), [(title, None)], pic_style(pg, "services", "index", ("padar-island", "50% 70%", "cover"))) + \
         f'<section class="sec"><div class="wrap">{services_grid(pg)}</div></section>' + cta_band(pg)
-    return layout(pg, f"{title} | Komodo & Ko.", t(HOME["services_p"]), body)
+    return layout(pg, f"{title} | Komodo and Ko", t(HOME["services_p"]), body)
 
 
 def service_page(pg, s):
@@ -442,7 +442,7 @@ def service_page(pg, s):
         grid = f'<div class="{cls}">{items}</div>'
     body = (hero + f'<div class="wrap"><div class="svc-intro"><h2>{esc(name)}</h2><p>{esc(t(s["intro"]))}</p></div>'
             f'{grid}</div>' + cta_band(pg))
-    return layout(pg, f"{name} | Komodo & Ko.", t(s["short"]), body)
+    return layout(pg, f"{name} | Komodo and Ko", t(s["short"]), body)
 
 
 def offer_pic(pg, s, a):
@@ -492,7 +492,7 @@ def offer_page(pg, s, item):
                f'<a class="link" href="{pg.link(service_own_page(s))}">{esc(t(UI["view_all"]))}</a></div>'
                f'<div class="grid g4">{more}</div></div></section>' if more else "")
             + cta_band(pg))
-    return layout(pg, f"{name} | {sname} | Komodo & Ko.", t(o["lead"]), body)
+    return layout(pg, f"{name} | {sname} | Komodo and Ko", t(o["lead"]), body)
 
 
 # ---------------------------------------------------------------------------
@@ -503,7 +503,7 @@ def packages_index(pg):
     title = t(UI["nav_packages"])
     body = page_hero(pg, title, t(UI["dd_packages"]), [(title, None)], pic_style(pg, "packages", "index", ("padar-island", "70% 60%", "cover"))) + \
         f'<section class="sec"><div class="wrap">{package_grid(pg, cls="g3")}</div></section>' + cta_band(pg)
-    return layout(pg, f"{title} | Komodo & Ko.", t(UI["dd_packages"]), body)
+    return layout(pg, f"{title} | Komodo and Ko", t(UI["dd_packages"]), body)
 
 
 def package_page(pg, p):
@@ -535,7 +535,7 @@ def package_page(pg, p):
     others = (f'<section class="sec paper"><div class="wrap"><div class="sec-head"><h2>{esc(t(UI["other_packages"]))}</h2></div>'
               f'{package_grid(pg, cls="g4", exclude=p["slug"])}</div></section>')
     body = hero + f'<div class="wrap"><div class="pkg"><div>{"".join(blocks)}</div>{facts}</div></div>' + others + cta_band(pg)
-    return layout(pg, f"{name} | Komodo & Ko.", t(p["intro"])[:155], body)
+    return layout(pg, f"{name} | Komodo and Ko", t(p["intro"])[:155], body)
 
 
 # ---------------------------------------------------------------------------
@@ -547,7 +547,7 @@ def destinations_index(pg):
     body = page_hero(pg, title, t(UI["dd_destinations"]), [(title, None)], pic_style(pg, "destinations", "index", ("padar-island", "50% 50%", "cover"))) + \
         '<section class="sec"><div class="wrap"><div class="grid g3">' + "".join(dest_card(pg, d) for d in DESTINATIONS) + \
         '</div></div></section>' + cta_band(pg)
-    return layout(pg, f"{title} | Komodo & Ko.", t(UI["dd_destinations"]), body)
+    return layout(pg, f"{title} | Komodo and Ko", t(UI["dd_destinations"]), body)
 
 
 def destination_page(pg, d):
@@ -574,7 +574,7 @@ def destination_page(pg, d):
             f'<a class="link" href="{pg.link("destinations/index.html")}">{esc(t(UI["all_destinations"]))}</a></div>'
             '<div class="grid g4">' + "".join(dest_card(pg, x) for x in pick) + "</div></div></section>")
     body = hero + article + more + cta_band(pg)
-    return layout(pg, f"{name} | Komodo & Ko.", t(d["what"])[:155], body)
+    return layout(pg, f"{name} | Komodo and Ko", t(d["what"])[:155], body)
 
 
 # ---------------------------------------------------------------------------
@@ -636,7 +636,7 @@ def enquiry_page(pg):
     <div class="form-ok" role="status">{esc(t(E["sent"]))}</div>
   </form>
 </div></div>"""
-    return layout(pg, f"{title} | Komodo & Ko.", t(E["intro"]), body)
+    return layout(pg, f"{title} | Komodo and Ko", t(E["intro"]), body)
 
 
 def about_page(pg):
@@ -645,10 +645,10 @@ def about_page(pg):
     paras = "".join(f"<p>{esc(t(x))}</p>" for x in ABOUT["body"])
     why = "".join(f"<div><h3>{esc(t(a))}</h3><p>{esc(t(b))}</p></div>" for a, b in HOME["why"])
     body = page_hero(pg, title, t(ABOUT["lead"]), [(title, None)], pic_style(pg, "pages", "about", ("komodo-dragon", "50% 40%", "cover"))) + f"""
-<div class="wrap"><div class="about-body"><span class="label">Komodo &amp; Ko.</span><div class="txt">{paras}</div></div></div>
+<div class="wrap"><div class="about-body"><span class="label">Komodo and Ko</span><div class="txt">{paras}</div></div></div>
 <section class="why"><div class="wrap"><h2>{esc(t(HOME["why_title"]))}</h2><div class="why-grid">{why}</div></div></section>
 {cta_band(pg)}"""
-    return layout(pg, f"{title} | Komodo & Ko.", t(ABOUT["lead"]), body)
+    return layout(pg, f"{title} | Komodo and Ko", t(ABOUT["lead"]), body)
 
 
 TERMS_TABLE = [
@@ -792,7 +792,7 @@ def legal_page(pg, data, fname):
             + f'<div class="wrap"><div class="article legal-doc"><nav class="toc" aria-label="{esc(t(UI["on_this_page"]))}">'
               f'<span class="label">{esc(t(UI["on_this_page"]))}</span>{"".join(toc)}</nav>'
               f'<div class="prose">{note}{"".join(secs)}</div></div></div>')
-    return layout(pg, f"{title} | Komodo & Ko.", title, body)
+    return layout(pg, f"{title} | Komodo and Ko", title, body)
 
 
 # ---------------------------------------------------------------------------
