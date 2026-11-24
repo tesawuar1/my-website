@@ -18,6 +18,7 @@ from content_main import (  # noqa: E402
 )
 
 ROOT = Path(__file__).resolve().parent.parent
+SITE_URL = "https://komodoandko.com"
 LANGS = ("en", "id")
 FONTS = ("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500"
          "&family=Jost:wght@400;500&display=swap")
@@ -203,6 +204,21 @@ def hero_preload(pg):
             f'{nl}<link rel="preload" as="image" href="{pg.asset(full)}?v={ver(full)}" media="(min-width: 961px)" fetchpriority="high">')
 
 
+def org_jsonld():
+    """Organization structured data (name + logo + social profiles) so Google can show
+    the brand logo in search results and knowledge panels. Lives on the main homepage only."""
+    data = {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "Komodo and Ko",
+        "url": SITE_URL + "/",
+        "logo": SITE_URL + "/assets/icons/favicon-512.png",
+        "email": CONTACT["email_enquiry"],
+        "sameAs": [u for _, u in CONTACT["social"]],
+    }
+    return f'<script type="application/ld+json">{json.dumps(data)}</script>'
+
+
 def layout(pg, title, desc, body, home_page=False, scripts=()):
     js = "".join(f'<script src="{pg.asset(s)}?v={ver(s)}" defer></script>' for s in ("js/main.js",) + tuple(scripts))
     return f"""<!doctype html>
@@ -220,6 +236,7 @@ def layout(pg, title, desc, body, home_page=False, scripts=()):
 <link rel="icon" href="{pg.asset("icons/favicon-16.png")}?v={ver("icons/favicon-16.png")}" sizes="16x16" type="image/png">
 <link rel="icon" href="{pg.asset("icons/favicon-192.png")}?v={ver("icons/favicon-192.png")}" sizes="192x192" type="image/png">
 <link rel="apple-touch-icon" href="{pg.asset("icons/apple-touch-icon.png")}?v={ver("icons/apple-touch-icon.png")}">
+{org_jsonld() if home_page and pg.lang == "en" else ""}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
@@ -798,6 +815,7 @@ def legal_page(pg, data, fname):
 # ---------------------------------------------------------------------------
 def build():
     count = 0
+    all_paths = []
     for lang in LANGS:
         base = ROOT if lang == "en" else ROOT / "id"
         pages = {
@@ -819,6 +837,7 @@ def build():
             pages[f"packages/{p['slug']}.html"] = (lambda p: lambda pg: package_page(pg, p))(p)
         for d in DESTINATIONS:
             pages[f"destinations/{d['slug']}.html"] = (lambda d: lambda pg: destination_page(pg, d))(d)
+        all_paths = list(pages)
         for path, fn in pages.items():
             out = base / path
             out.parent.mkdir(parents=True, exist_ok=True)
@@ -839,8 +858,35 @@ def build():
             for d in sorted(folder.rglob("*"), key=lambda p: -len(p.parts)):
                 if d.is_dir() and not any(d.iterdir()):
                     d.rmdir()
+    write_sitemap(all_paths)
+    write_robots()
     write_credits()
     print(f"Built {count} pages.")
+
+
+def write_sitemap(paths):
+    """List every page, in both languages, with hreflang alternates between them."""
+    def page_url(lang, path):
+        prefix = "" if lang == "en" else "id/"
+        return f"{SITE_URL}/{prefix}{clean_url(path)}"
+
+    entries = []
+    for path in paths:
+        en_url, id_url = page_url("en", path), page_url("id", path)
+        alts = (f'<xhtml:link rel="alternate" hreflang="en" href="{esc(en_url)}"/>'
+                f'<xhtml:link rel="alternate" hreflang="id" href="{esc(id_url)}"/>')
+        for loc in (en_url, id_url):
+            entries.append(f"<url><loc>{esc(loc)}</loc>{alts}</url>")
+    xml = ('<?xml version="1.0" encoding="UTF-8"?>\n'
+           '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" '
+           'xmlns:xhtml="http://www.w3.org/1999/xhtml">\n'
+           + "\n".join(entries) + "\n</urlset>\n")
+    (ROOT / "sitemap.xml").write_text(xml, encoding="utf-8")
+
+
+def write_robots():
+    (ROOT / "robots.txt").write_text(
+        f"User-agent: *\nAllow: /\n\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
 
 
 def write_credits():
