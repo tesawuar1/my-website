@@ -235,8 +235,7 @@ def layout(pg, title, desc, body, home_page=False, scripts=()):
 <link rel="icon" href="{pg.asset("icons/favicon-32.png")}?v={ver("icons/favicon-32.png")}" sizes="32x32" type="image/png">
 <link rel="icon" href="{pg.asset("icons/favicon-16.png")}?v={ver("icons/favicon-16.png")}" sizes="16x16" type="image/png">
 <link rel="icon" href="{pg.asset("icons/favicon-192.png")}?v={ver("icons/favicon-192.png")}" sizes="192x192" type="image/png">
-<link rel="apple-touch-icon" href="{pg.asset("icons/apple-touch-icon.png")}?v={ver("icons/apple-touch-icon.png")}">
-{org_jsonld() if home_page and pg.lang == "en" else ""}
+<link rel="apple-touch-icon" href="{pg.asset("icons/apple-touch-icon.png")}?v={ver("icons/apple-touch-icon.png")}">{(chr(10) + org_jsonld()) if home_page and pg.lang == "en" else ""}
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="{FONTS}">
