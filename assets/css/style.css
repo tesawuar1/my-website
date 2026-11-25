@@ -407,13 +407,16 @@ body.menu-open{overflow:hidden}
 .field.full{grid-column:1/-1}
 .field label{font-weight:500;font-size:16px;color:var(--forest);letter-spacing:.02em}
 .field label .req{color:var(--brass);margin-left:3px}
-.field input,.field textarea{font:inherit;font-size:17px;color:var(--ink);border:1px solid #d6d1c2;padding:15px 16px;background:var(--paper);transition:border-color .25s,background .25s}
+.field input,.field textarea,.field select{font:inherit;font-size:17px;color:var(--ink);border:1px solid #d6d1c2;padding:15px 16px;background:var(--paper);transition:border-color .25s,background .25s}
 .field textarea{min-height:130px;resize:vertical}
-.field input:focus,.field textarea:focus{outline:none;border-color:var(--forest);background:var(--white)}
+.field input:focus,.field textarea:focus,.field select:focus{outline:none;border-color:var(--forest);background:var(--white)}
 .field input::placeholder,.field textarea::placeholder{color:#8c9285}
-.date-range{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
-.date-range input{flex:1;min-width:150px}
-.date-sep{color:var(--ink2);font-size:17px;flex:none}
+.budget-pick{display:flex;flex-direction:column;gap:12px}
+.other-input{margin-top:2px}
+.check-list{display:grid;grid-template-columns:repeat(2,1fr);gap:10px 20px}
+.check-list .other-input{grid-column:1/-1}
+.check-list .chk{display:flex;align-items:flex-start;gap:10px;font-size:16px;font-weight:400;color:var(--ink);cursor:pointer}
+.check-list .chk input{width:18px;height:18px;margin-top:1px;accent-color:var(--forest);flex:none}
 .field .err{display:none;font-size:15px;color:#9a3324}
 .field.bad input,.field.bad textarea{border-color:#9a3324}
 .field.bad .err{display:block}
@@ -537,9 +540,7 @@ body.menu-open{overflow:hidden}
   .grid.g2,.grid.g3,.grid.g4,.grid.pk{grid-template-columns:1fr}
   .grid{gap:48px}
   .form{grid-template-columns:1fr}
-  .date-range{flex-direction:column;align-items:stretch}
-  .date-range input{min-width:0}
-  .date-sep{align-self:center;transform:rotate(90deg)}
+  .check-list{grid-template-columns:1fr}
   .options{grid-template-columns:1fr}
   .days li{grid-template-columns:1fr;gap:4px}
   .f-grid{grid-template-columns:1fr}

@@ -11,6 +11,8 @@ CONTACT = {
     "email_partner": "partnership@komodoandko.com",
     "whatsapp_display": "0823-3929-7918",
     "whatsapp_intl": "6282339297918",  # used for wa.me links
+    "company": "PT. Mountclaire Group International",
+    "address": "Jl. Frans Nala, Labuan Bajo, Kec. Komodo, Kabupaten Manggarai Barat, Nusa Tenggara Tim.",
     # Google Apps Script "Web app" URL that saves enquiries to the Google Sheet and emails
     # the team. Leave empty until it is set up (see tools/google-apps-script/SETUP.md).
     "enquiry_endpoint": "https://script.google.com/macros/s/AKfycbwAu16ED6XwP_X-eK7sjr0NGnXa_NaIHLO1YoNd0I9fbTSJi1jLTbuAZWJqrkD0bza85A/exec",
@@ -71,6 +73,8 @@ UI = {
         "Layanan concierge untuk Taman Nasional Komodo dan Labuan Bajo.",
     ),
     "footer_enquiry": L("Enquiries", "Pertanyaan & pemesanan"),
+    "footer_company": L("Company", "Perusahaan"),
+    "footer_office": L("Office", "Kantor"),
     "footer_partner": L("Partnerships", "Kerja sama"),
     "footer_follow": L("Follow us", "Ikuti kami"),
     "footer_explore": L("Explore", "Jelajahi"),
@@ -184,8 +188,8 @@ SERVICES = [
         "slug": "stays",
         "name": L("Stays", "Akomodasi"),
         "short": L(
-            "Hotels and villas in Labuan Bajo, chosen to match your trip.",
-            "Hotel dan villa di Labuan Bajo, dipilih sesuai perjalanan Anda.",
+            "Hotels, resorts and villas in Labuan Bajo, chosen to match your trip.",
+            "Hotel, resor, dan villa di Labuan Bajo, dipilih sesuai perjalanan Anda.",
         ),
         "pic": ("padar-island", "55% 30%", "240%"),
         "intro": L(
@@ -196,8 +200,12 @@ SERVICES = [
         ),
         "items": [
             ("hotel", L("Hotel", "Hotel"), L(
-                "From boutique hotels to resorts with sea views, with transfers to the harbour arranged.",
-                "Dari hotel butik hingga resor dengan pemandangan laut, termasuk pengaturan transfer ke pelabuhan.",
+                "Boutique and city hotels in Labuan Bajo, with transfers to the harbour arranged.",
+                "Hotel butik dan hotel kota di Labuan Bajo, termasuk pengaturan transfer ke pelabuhan.",
+            )),
+            ("resort", L("Resort", "Resor"), L(
+                "Full-service resorts with sea views, pools and dining, for a more relaxed stay before or after your trip.",
+                "Resor dengan layanan lengkap, pemandangan laut, kolam renang, dan restoran, untuk menginap lebih santai sebelum atau sesudah perjalanan.",
             )),
             ("villa", L("Villa", "Villa"), L(
                 "Private villas for families, groups and couples who want space and privacy.",
@@ -594,8 +602,6 @@ ENQUIRY = {
         "Tell us about your trip and we will reply with ideas and a personal quote. All fields are required.",
         "Ceritakan rencana perjalanan Anda dan kami akan membalas dengan ide serta penawaran pribadi. Semua kolom wajib diisi.",
     ),
-    "date_from": L("Start date", "Tanggal mulai"),
-    "date_to": L("End date", "Tanggal selesai"),
     "next_title": L("What happens next", "Langkah selanjutnya"),
     "next": [
         L("Choose to send your enquiry by WhatsApp or email.", "Pilih untuk mengirim permintaan Anda melalui WhatsApp atau email."),
@@ -606,17 +612,32 @@ ENQUIRY = {
         "name": (L("Name", "Nama"), L("e.g. John Smith", "contoh: John Smith")),
         "phone": (L("Phone / WhatsApp number", "Nomor telepon / WhatsApp"), L("e.g. +62 812 3456 7890", "contoh: +62 812 3456 7890")),
         "email": (L("Email", "Email"), L("e.g. johnsmith@gmail.com", "contoh: johnsmith@gmail.com")),
-        "dates": (L("Travel dates", "Tanggal perjalanan"), L("Your travel date or preferred date range", "Tanggal perjalanan atau rentang tanggal yang Anda inginkan")),
+        "dates": (L("Travel dates", "Tanggal perjalanan"), L("e.g. 1 - 7 May 2027", "cth. 1 - 7 Mei 2027")),
         "guests": (L("Number of guests", "Jumlah tamu"), L("e.g. 2", "contoh: 2")),
-        "service": (L("Service / preferred experience", "Layanan / pengalaman yang diinginkan"), L("What service and experience are you looking for?", "Layanan dan pengalaman apa yang Anda cari?")),
-        "budget": (L("Estimated budget", "Perkiraan anggaran"), L("Your estimated budget for this trip", "Perkiraan anggaran Anda untuk perjalanan ini")),
+        "service": (L("What service are you looking for?", "Layanan apa yang Anda cari?"), ""),
+        "budget": (L("How much is your budget for this trip?", "Berapa perkiraan anggaran Anda untuk perjalanan ini?"), ""),
+        "special_request": (L("Special request", "Permintaan khusus"),
+                             L("Anything else we should know? (optional)", "Ada hal lain yang perlu kami ketahui? (opsional)")),
     },
+    "service_options": [
+        L("Boats & private yacht charters", "Kapal & sewa yacht pribadi"),
+        L("Hotels, resorts & villas", "Hotel, resor & villa"),
+        L("Airport transfers and private transportation", "Transfer bandara dan transportasi pribadi"),
+        L("Restaurants, and spas", "Restoran, dan spa"),
+        L("Activities and experiences", "Aktivitas dan pengalaman"),
+        L("Itineraries design and trip planning", "Desain itinerary dan perencanaan perjalanan"),
+    ],
+    "service_other": L("Other", "Lainnya"),
+    "service_other_ph": L("Please specify", "Mohon sebutkan"),
+    "budget_options": ["Under $500", "$500 - $1,000", "$1,000 - $5,000", "$10,000 - $20,000", "$30,000 - $50,000", "$50,000+"],
+    "budget_placeholder": L("Select a range", "Pilih kisaran"),
+    "budget_other": L("Write your own", "Tulis sendiri"),
+    "budget_other_ph": L("e.g. around $2,500", "cth. sekitar $2.500"),
     "errors": {
         "required": L("Please fill in this field.", "Mohon isi kolom ini."),
         "email": L("Please enter a valid email address, e.g. johnsmith@gmail.com.", "Mohon masukkan alamat email yang valid, contoh: johnsmith@gmail.com."),
         "phone": L("Please enter a phone number with at least 8 digits.", "Mohon masukkan nomor telepon minimal 8 digit."),
         "guests": L("Please enter a number of at least 1.", "Mohon masukkan angka minimal 1."),
-        "range": L("Please choose a start and end date.", "Mohon pilih tanggal mulai dan selesai."),
     },
     "send_wa": L("Send via WhatsApp", "Kirim via WhatsApp"),
     "send_email": L("Send via Email", "Kirim via Email"),
@@ -647,8 +668,8 @@ ABOUT = {
           "Whether you are planning a honeymoon, a family holiday or a corporate event, we design the trip around you and stay with you until you are home.",
           "Kami mengenal pulau-pulaunya, musimnya, dan orang-orang yang bekerja di sini, serta memilih mitra kami dengan cermat. "
           "Baik Anda merencanakan honeymoon, liburan keluarga, maupun acara perusahaan, kami merancang perjalanan sesuai kebutuhan Anda dan mendampingi Anda hingga kembali ke rumah."),
-        L("Komodo and Ko operates under PT Mountclaire Group Indonesia.",
-          "Komodo and Ko beroperasi di bawah naungan PT Mountclaire Group Indonesia."),
+        L("Komodo and Ko operates under PT. Mountclaire Group International.",
+          "Komodo and Ko beroperasi di bawah naungan PT. Mountclaire Group International."),
     ],
 }
 

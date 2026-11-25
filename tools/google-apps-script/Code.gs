@@ -30,7 +30,7 @@ var OWNER_EMAIL = "YOUR-MAIN-ADDRESS@gmail.com";     // owns the sheet; the only
 var STAFF_EMAIL = "YOUR-STAFF-ADDRESS@gmail.com";    // notification only — never given sheet access
 var SHEET_NAME = "Enquiries";
 var HEADERS = ["Received", "Sent via", "Name", "Phone / WhatsApp", "Email", "Travel dates",
-               "Guests", "Service / experience", "Estimated budget", "Language", "Page", "Status"];
+               "Guests", "Service / experience", "Estimated budget", "Special request", "Language", "Page", "Status"];
 
 /** Run once: creates the spreadsheet and adds headers. Only OWNER_EMAIL ever gets
  *  edit access automatically — STAFF_EMAIL is intentionally not shared the sheet. */
@@ -65,7 +65,7 @@ function doPost(e) {
       var ss = SpreadsheetApp.openById(PropertiesService.getScriptProperties().getProperty("SHEET_ID"));
       var sh = ss.getSheetByName(SHEET_NAME);
       var row = [new Date(), d.channel === "wa" ? "WhatsApp" : "Email", clean(d.name), clean(d.phone),
-                 clean(d.email), clean(d.dates), clean(d.guests), clean(d.service), clean(d.budget),
+                 clean(d.email), clean(d.dates), clean(d.guests), clean(d.service), clean(d.budget), clean(d.special_request),
                  d.lang === "id" ? "Indonesian" : "English", clean(d.page), "New"];
       sh.appendRow(row);
     } finally {
@@ -95,6 +95,7 @@ function notify(d, sheetUrl) {
     "Guests: " + clean(d.guests),
     "Service / experience: " + clean(d.service),
     "Estimated budget: " + clean(d.budget),
+    "Special request: " + clean(d.special_request),
     "Language: " + (d.lang === "id" ? "Indonesian" : "English"), "",
     "All enquiries: " + sheetUrl
   ];

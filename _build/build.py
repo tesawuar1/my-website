@@ -175,7 +175,9 @@ def footer(pg):
   <div class="f-grid">
     <div><h3>{esc(t(UI["footer_enquiry"]))}</h3><ul class="f-list">
       <li><a href="mailto:{CONTACT["email_enquiry"]}">{CONTACT["email_enquiry"]}</a></li>
-      <li><small>WhatsApp</small><a href="https://wa.me/{CONTACT["whatsapp_intl"]}" target="_blank" rel="noopener">{CONTACT["whatsapp_display"]}</a></li></ul></div>
+      <li><small>WhatsApp</small><a href="https://wa.me/{CONTACT["whatsapp_intl"]}" target="_blank" rel="noopener">{CONTACT["whatsapp_display"]}</a></li>
+      <li><small>{esc(t(UI["footer_company"]))}</small><span>{esc(CONTACT["company"])}</span></li>
+      <li><small>{esc(t(UI["footer_office"]))}</small><span>{esc(CONTACT["address"])}</span></li></ul></div>
     <div><h3>{esc(t(UI["footer_partner"]))}</h3><ul class="f-list">
       <li><a href="mailto:{CONTACT["email_partner"]}">{CONTACT["email_partner"]}</a></li></ul></div>
     <div><h3>{esc(t(UI["footer_follow"]))} @komodoandko</h3><ul class="f-list">{socials}</ul></div>
@@ -602,12 +604,14 @@ def enquiry_page(pg):
     title = t(E["title"])
     F = E["fields"]
 
-    def fld(name, typ="text", full=False, area=False, extra=""):
+    def fld(name, typ="text", full=False, area=False, extra="", optional=False):
         lab, ph = F[name]
         cls = "field full" if full else "field"
-        ctl = (f'<textarea id="f-{name}" name="{name}" placeholder="{esc(t(ph))}" required aria-describedby="e-{name}"></textarea>' if area
-               else f'<input id="f-{name}" name="{name}" type="{typ}" placeholder="{esc(t(ph))}" required aria-describedby="e-{name}" {extra}>')
-        return (f'<div class="{cls}"><label for="f-{name}">{esc(t(lab))}<span class="req" aria-hidden="true">*</span></label>{ctl}'
+        req = "" if optional else " required"
+        star = "" if optional else '<span class="req" aria-hidden="true">*</span>'
+        ctl = (f'<textarea id="f-{name}" name="{name}" placeholder="{esc(t(ph))}"{req} aria-describedby="e-{name}"></textarea>' if area
+               else f'<input id="f-{name}" name="{name}" type="{typ}" placeholder="{esc(t(ph))}"{req} aria-describedby="e-{name}" {extra}>')
+        return (f'<div class="{cls}"><label for="f-{name}">{esc(t(lab))}{star}</label>{ctl}'
                 f'<span class="err" id="e-{name}" role="alert"></span></div>')
     cfg = {
         "wa": CONTACT["whatsapp_intl"], "email": CONTACT["email_enquiry"],
@@ -616,15 +620,28 @@ def enquiry_page(pg):
         "labels": {k: t(v[0]) for k, v in F.items()},
         "err": {k: t(v) for k, v in E["errors"].items()},
     }
-    date_field = (
-        f'<div class="field full"><label for="f-date-start">{esc(t(F["dates"][0]))}<span class="req" aria-hidden="true">*</span></label>'
-        f'<div class="date-range">'
-        f'<input id="f-date-start" type="date" aria-label="{esc(t(E["date_from"]))}">'
-        f'<span class="date-sep" aria-hidden="true">&#8594;</span>'
-        f'<input id="f-date-end" type="date" aria-label="{esc(t(E["date_to"]))}">'
-        f'</div>'
-        f'<input type="hidden" id="f-dates" name="dates" required aria-describedby="e-dates">'
-        f'<span class="err" id="e-dates" role="alert"></span></div>'
+    # Budget: a dropdown of ranges, plus a "write your own" option that reveals a text
+    # input — both feed the hidden #f-budget field that actually gets sent.
+    budget_opts = "".join(f'<option value="{esc(o)}">{esc(t(o))}</option>' for o in E["budget_options"])
+    budget_field = (
+        f'<div class="field full"><label for="f-budget-select">{esc(t(F["budget"][0]))}<span class="req" aria-hidden="true">*</span></label>'
+        f'<div class="budget-pick"><select id="f-budget-select">'
+        f'<option value="" disabled selected>{esc(t(E["budget_placeholder"]))}</option>{budget_opts}'
+        f'<option value="other">{esc(t(E["budget_other"]))}</option></select>'
+        f'<input id="f-budget-other" class="other-input" type="text" placeholder="{esc(t(E["budget_other_ph"]))}" hidden></div>'
+        f'<input type="hidden" id="f-budget" name="budget" required aria-describedby="e-budget">'
+        f'<span class="err" id="e-budget" role="alert"></span></div>'
+    )
+    # Service: a checklist so guests can pick several, plus an "Other" box with its own
+    # text field — both feed the hidden #f-service field that actually gets sent.
+    svc_checks = "".join(f'<label class="chk"><input type="checkbox" value="{esc(t(o))}">{esc(t(o))}</label>' for o in E["service_options"])
+    svc_checks += f'<label class="chk"><input type="checkbox" id="f-service-other-chk" value="{esc(t(E["service_other"]))}">{esc(t(E["service_other"]))}</label>'
+    service_field = (
+        f'<div class="field full"><label>{esc(t(F["service"][0]))}<span class="req" aria-hidden="true">*</span></label>'
+        f'<div class="check-list">{svc_checks}'
+        f'<input id="f-service-other" class="other-input" type="text" placeholder="{esc(t(E["service_other_ph"]))}" hidden></div>'
+        f'<input type="hidden" id="f-service" name="service" required aria-describedby="e-service">'
+        f'<span class="err" id="e-service" role="alert"></span></div>'
     )
     # "What happens next" shows the five "How it works" steps
     steps = "".join(f"<li><strong>{esc(t(a))}</strong><span>{esc(t(b))}</span></li>" for a, b in HOME["how_steps"])
@@ -640,9 +657,10 @@ def enquiry_page(pg):
     {fld("phone", "tel", extra='autocomplete="tel" inputmode="tel"')}
     {fld("email", "email", extra='autocomplete="email"')}
     {fld("guests", "number", extra='min="1" inputmode="numeric"')}
-    {date_field}
-    {fld("service", full=True, area=True)}
-    {fld("budget", full=True)}
+    {fld("dates", full=True)}
+    {service_field}
+    {budget_field}
+    {fld("special_request", full=True, area=True, optional=True)}
     <div class="hp" aria-hidden="true"><label for="f-website">Leave this field empty</label><input id="f-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
     <div class="form-actions">
       <button type="button" class="btn btn-solid" data-send="wa">{WA_ICON}{esc(t(E["send_wa"]))}</button>

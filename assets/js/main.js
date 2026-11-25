@@ -179,33 +179,45 @@
   var form = document.getElementById("enquiry-form");
   if (form) {
     var cfg = JSON.parse(form.getAttribute("data-cfg"));
-    /* direct children only: the two visible date pickers sit a level deeper, inside
-       .date-range, and are combined into the hidden #f-dates below instead of being
-       submitted as fields of their own */
+    /* direct children only: the budget/service pickers below build their own visible
+       controls a level deeper, and combine the result into a hidden field here instead
+       of submitting their pieces as fields of their own */
     var fields = Array.prototype.slice.call(form.querySelectorAll(".field > input, .field > textarea"));
     var trap = form.elements.website;   // hidden spam trap: people never see or fill it
 
-    /* Travel dates: two native date pickers (so month/year/day all pick from a real
-       calendar) combined into one readable value in the hidden field that actually
-       gets validated and sent. */
+    /* Budget: a dropdown of ranges, plus a "write your own" option that reveals a
+       text input — both feed the hidden field that actually gets validated and sent. */
     (function () {
-      var start = document.getElementById("f-date-start"), end = document.getElementById("f-date-end");
-      var hidden = document.getElementById("f-dates");
-      if (!start || !end || !hidden) return;
-      var today = new Date().toISOString().slice(0, 10);
-      start.min = today;
-      function fmt(iso) {
-        var d = new Date(iso + "T00:00:00");
-        return d.toLocaleDateString(cfg.lang === "id" ? "id-ID" : "en-US", { day: "numeric", month: "short", year: "numeric" });
-      }
+      var sel = document.getElementById("f-budget-select"), other = document.getElementById("f-budget-other");
+      var hidden = document.getElementById("f-budget");
+      if (!sel || !other || !hidden) return;
       function sync() {
-        end.min = start.value || today;
-        if (start.value && end.value && end.value < start.value) end.value = start.value;
-        hidden.value = start.value && end.value ? fmt(start.value) + " – " + fmt(end.value) : "";
+        var isOther = sel.value === "other";
+        other.hidden = !isOther;
+        hidden.value = isOther ? other.value.trim() : sel.value;
         if (hidden.closest(".field").classList.contains("bad")) check(hidden);
       }
-      start.addEventListener("change", sync);
-      end.addEventListener("change", sync);
+      sel.addEventListener("change", sync);
+      other.addEventListener("input", sync);
+    })();
+
+    /* Service: a checklist so guests can pick several, plus an "Other" box with its
+       own text field — both feed the hidden field that actually gets validated and sent. */
+    (function () {
+      var list = form.querySelector(".check-list");
+      var otherChk = document.getElementById("f-service-other-chk"), other = document.getElementById("f-service-other");
+      var hidden = document.getElementById("f-service");
+      if (!list || !hidden) return;
+      function sync() {
+        if (other) other.hidden = !(otherChk && otherChk.checked);
+        var vals = Array.prototype.slice.call(list.querySelectorAll("input[type=checkbox]:checked")).map(function (c) {
+          return c === otherChk && other && other.value.trim() ? other.value.trim() : c.value;
+        });
+        hidden.value = vals.join(", ");
+        if (hidden.closest(".field").classList.contains("bad")) check(hidden);
+      }
+      list.addEventListener("change", sync);
+      if (other) other.addEventListener("input", sync);
     })();
 
     /* Save a copy of the enquiry to the Google Sheet (and email the team) before
@@ -225,7 +237,7 @@
 
     function check(el) {
       var v = el.value.trim(), msg = "";
-      if (!v) msg = cfg.err.required;
+      if (!v) { if (el.required) msg = cfg.err.required; }
       else if (el.name === "email" && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(v)) msg = cfg.err.email;
       else if (el.name === "phone" && v.replace(/\D/g, "").length < 8) msg = cfg.err.phone;
       else if (el.name === "guests" && !(parseInt(v, 10) >= 1)) msg = cfg.err.guests;
@@ -242,7 +254,11 @@
 
     function message() {
       var lines = [cfg.intro, ""];
-      fields.forEach(function (el) { lines.push(cfg.labels[el.name] + ": " + el.value.trim()); });
+      fields.forEach(function (el) {
+        var v = el.value.trim();
+        if (!v && !el.required) return;
+        lines.push(cfg.labels[el.name] + ": " + v);
+      });
       return lines.join("\n");
     }
 
