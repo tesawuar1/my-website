@@ -253,13 +253,13 @@
     });
 
     function message() {
-      var lines = [cfg.intro, ""];
+      var lines = [cfg.intro];
       fields.forEach(function (el) {
         var v = el.value.trim();
         if (!v && !el.required) return;
         lines.push(cfg.labels[el.name] + ": " + v);
       });
-      return lines.join("\n");
+      return lines.join("\n\n");   // a blank line between each field, so it's easy to read on WhatsApp/email
     }
 
     form.addEventListener("submit", function (e) { e.preventDefault(); });
