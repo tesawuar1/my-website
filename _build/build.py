@@ -633,13 +633,12 @@ def enquiry_page(pg):
         f'<span class="err" id="e-budget" role="alert"></span></div>'
     )
     # Service: a checklist so guests can pick several, plus an "Other" box with its own
-    # text field — both feed the hidden #f-service field that actually gets sent.
+    # text field under the options — both feed the hidden #f-service field that actually gets sent.
     svc_checks = "".join(f'<label class="chk"><input type="checkbox" value="{esc(t(o))}">{esc(t(o))}</label>' for o in E["service_options"])
-    svc_checks += f'<label class="chk"><input type="checkbox" id="f-service-other-chk" value="{esc(t(E["service_other"]))}">{esc(t(E["service_other"]))}</label>'
     service_field = (
         f'<div class="field full"><label>{esc(t(F["service"][0]))}<span class="req" aria-hidden="true">*</span></label>'
         f'<div class="check-list">{svc_checks}'
-        f'<input id="f-service-other" class="other-input" type="text" placeholder="{esc(t(E["service_other_ph"]))}" hidden></div>'
+        f'<textarea id="f-service-detail" class="other-input" placeholder="{esc(t(E["service_detail_ph"]))}"></textarea></div>'
         f'<input type="hidden" id="f-service" name="service" required aria-describedby="e-service">'
         f'<span class="err" id="e-service" role="alert"></span></div>'
     )

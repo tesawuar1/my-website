@@ -201,23 +201,22 @@
       other.addEventListener("input", sync);
     })();
 
-    /* Service: a checklist so guests can pick several, plus an "Other" box with its
-       own text field — both feed the hidden field that actually gets validated and sent. */
+    /* Service: a checklist so guests can pick several, plus a free-text field under it
+       to explain or specify further — both feed the hidden field that actually gets
+       validated and sent. */
     (function () {
       var list = form.querySelector(".check-list");
-      var otherChk = document.getElementById("f-service-other-chk"), other = document.getElementById("f-service-other");
+      var detail = document.getElementById("f-service-detail");
       var hidden = document.getElementById("f-service");
       if (!list || !hidden) return;
       function sync() {
-        if (other) other.hidden = !(otherChk && otherChk.checked);
-        var vals = Array.prototype.slice.call(list.querySelectorAll("input[type=checkbox]:checked")).map(function (c) {
-          return c === otherChk && other && other.value.trim() ? other.value.trim() : c.value;
-        });
+        var vals = Array.prototype.slice.call(list.querySelectorAll("input[type=checkbox]:checked")).map(function (c) { return c.value; });
+        if (detail && detail.value.trim()) vals.push(detail.value.trim());
         hidden.value = vals.join(", ");
         if (hidden.closest(".field").classList.contains("bad")) check(hidden);
       }
       list.addEventListener("change", sync);
-      if (other) other.addEventListener("input", sync);
+      if (detail) detail.addEventListener("input", sync);
     })();
 
     /* Save a copy of the enquiry to the Google Sheet (and email the team) before
