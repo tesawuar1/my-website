@@ -211,8 +211,9 @@
       if (!list || !hidden) return;
       function sync() {
         var vals = Array.prototype.slice.call(list.querySelectorAll("input[type=checkbox]:checked")).map(function (c) { return c.value; });
-        if (detail && detail.value.trim()) vals.push(detail.value.trim());
-        hidden.value = vals.join(", ");
+        var text = detail ? detail.value.trim() : "";
+        if (text) vals.push(text);
+        hidden.value = text ? vals.join(", ") : "";   // the explanation is the required part; ticking boxes alone isn't enough
         if (hidden.closest(".field").classList.contains("bad")) check(hidden);
       }
       list.addEventListener("change", sync);
