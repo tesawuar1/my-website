@@ -506,6 +506,7 @@ body.menu-open{overflow:hidden}
   .why-grid{grid-template-columns:1fr;gap:40px;margin-top:56px}
   .about,.article,.pkg,.enq,.about-body,.svc-intro{grid-template-columns:1fr;gap:48px}
   .toc,.facts,.enq-side{position:static}
+  .enq-side{order:1}
   .toc{display:none}
   .article,.pkg,.enq,.svc-intro,.legal,.about-body{padding-top:80px}
   .items,.items.three{grid-template-columns:1fr}
