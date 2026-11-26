@@ -177,7 +177,7 @@ def footer(pg):
       <li><a href="mailto:{CONTACT["email_enquiry"]}">{CONTACT["email_enquiry"]}</a></li>
       <li><small>WhatsApp</small><a href="https://wa.me/{CONTACT["whatsapp_intl"]}" target="_blank" rel="noopener">{CONTACT["whatsapp_display"]}</a></li>
       <li><small>{esc(t(UI["footer_company"]))}</small><span>{esc(CONTACT["company"])}</span></li>
-      <li><small>{esc(t(UI["footer_office"]))}</small><span>{esc(CONTACT["address"])}</span></li></ul></div>
+      <li><small>{esc(t(UI["footer_office"]))}</small><a href="{CONTACT["map_url"]}" target="_blank" rel="noopener">{esc(CONTACT["address"])}</a></li></ul></div>
     <div><h3>{esc(t(UI["footer_partner"]))}</h3><ul class="f-list">
       <li><a href="mailto:{CONTACT["email_partner"]}">{CONTACT["email_partner"]}</a></li></ul></div>
     <div><h3>{esc(t(UI["footer_follow"]))} @komodoandko</h3><ul class="f-list">{socials}</ul></div>

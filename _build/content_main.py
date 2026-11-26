@@ -12,7 +12,8 @@ CONTACT = {
     "whatsapp_display": "0823-3929-7918",
     "whatsapp_intl": "6282339297918",  # used for wa.me links
     "company": "PT. Mountclaire Group International",
-    "address": "Jl. Frans Nala, Labuan Bajo, Kec. Komodo, Kabupaten Manggarai Barat, Nusa Tenggara Tim.",
+    "address": "Jl. Frans Nala, Batu Cermin, Labuan Bajo, Kec. Komodo, Kabupaten Manggarai Barat, Nusa Tenggara Tim.",
+    "map_url": "https://maps.app.goo.gl/fVQPhCmTgqbK36jD9",
     # Google Apps Script "Web app" URL that saves enquiries to the Google Sheet and emails
     # the team. Leave empty until it is set up (see tools/google-apps-script/SETUP.md).
     "enquiry_endpoint": "https://script.google.com/macros/s/AKfycbwAu16ED6XwP_X-eK7sjr0NGnXa_NaIHLO1YoNd0I9fbTSJi1jLTbuAZWJqrkD0bza85A/exec",
@@ -668,8 +669,8 @@ ABOUT = {
           "Whether you are planning a honeymoon, a family holiday or a corporate event, we design the trip around you and stay with you until you are home.",
           "Kami mengenal pulau-pulaunya, musimnya, dan orang-orang yang bekerja di sini, serta memilih mitra kami dengan cermat. "
           "Baik Anda merencanakan honeymoon, liburan keluarga, maupun acara perusahaan, kami merancang perjalanan sesuai kebutuhan Anda dan mendampingi Anda hingga kembali ke rumah."),
-        L("Komodo and Ko operates under PT. Mountclaire Group International.",
-          "Komodo and Ko beroperasi di bawah naungan PT. Mountclaire Group International."),
+        L("Komodo and Ko operates under PT. Mountclaire Group International. Company registration number: 1504260000353.",
+          "Komodo and Ko beroperasi di bawah naungan PT. Mountclaire Group International. Nomor induk berusaha (NIB): 1504260000353."),
     ],
 }
 
