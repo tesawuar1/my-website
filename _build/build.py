@@ -622,7 +622,7 @@ def enquiry_page(pg):
     }
     # Budget: a dropdown of ranges, plus a "write your own" option that reveals a text
     # input — both feed the hidden #f-budget field that actually gets sent.
-    budget_opts = "".join(f'<option value="{esc(o)}">{esc(t(o))}</option>' for o in E["budget_options"])
+    budget_opts = "".join(f'<option value="{esc(t(o))}">{esc(t(o))}</option>' for o in E["budget_options"])
     budget_field = (
         f'<div class="field full"><label for="f-budget-select">{esc(t(F["budget"][0]))}<span class="req" aria-hidden="true">*</span></label>'
         f'<div class="budget-pick"><select id="f-budget-select">'
